@@ -505,25 +505,26 @@
             <div style="font-weight:800; margin-bottom:6px;">Monthly cash cost bands (per FTE)</div>
             <table aria-label="Role cost bands">
               <thead>
+              <thead>
                 <tr>
-                  <th>Role</th>
-                  <th>Low (Global)</th>
-                  <th>Mid (Mixed)</th>
-                  <th>High (US/EU)</th>
+                  <th>Role (Monthly)</th>
+                  <th>Jr</th>
+                  <th>Mid</th>
+                  <th>Sr</th>
                 </tr>
               </thead>
+</thead>
               <tbody>
-                <tr><td>Game Designer</td><td class="money">$3,000</td><td class="money">$5,500</td><td class="money">$8,500</td></tr>
-                <tr><td>Game Developer</td><td class="money">$4,000</td><td class="money">$7,000</td><td class="money">$10,000</td></tr>
-                <tr><td>2D Artist</td><td class="money">$3,000</td><td class="money">$5,500</td><td class="money">$8,000</td></tr>
-                <tr><td>Producer (Founder)</td><td class="money">$0</td><td class="money">$0</td><td class="money">$0</td></tr>
-                <tr><td>QA</td><td class="money">$2,500</td><td class="money">$4,000</td><td class="money">$6,000</td></tr>
-                <tr><td>Animator (0.5 FTE)</td><td class="money">$2,000</td><td class="money">$3,500</td><td class="money">$5,000</td></tr>
-                <tr><td>Audio (0.25 FTE)</td><td class="money">$1,200</td><td class="money">$2,000</td><td class="money">$3,000</td></tr>
+              <tbody>
+                <tr><td>Game Developer (Unity) ×2</td><td class="money">$12,000</td><td class="money">$18,000</td><td class="money">$24,000</td></tr>
+                <tr><td>C# / Systems Engineer ×1</td><td class="money">$7,000</td><td class="money">$10,000</td><td class="money">$14,000</td></tr>
+                <tr><td>Artist ×2</td><td class="money">$9,000</td><td class="money">$13,000</td><td class="money">$18,000</td></tr>
+                <tr><td>Sound Designer ×1</td><td class="money">$3,500</td><td class="money">$5,000</td><td class="money">$7,000</td></tr>
               </tbody>
+
             </table>
             <div class="note">
-              Notes: Bands represent typical indie contractor equivalents and are used for sensitivity planning (not promises). Final rates should be replaced with signed contractor quotes.
+              Notes: Monthly rates are planning averages for indie hiring/contracting. Replace with signed offers/quotes. Totals below assume full-time equivalents unless otherwise noted.
             </div>
           </div>
 
@@ -698,10 +699,10 @@
       {
         id: "full_global",
         name: "Full Game — Founder-Led (Global-Heavy)",
-        budgetLow: 390000,
-        budgetHigh: 450000,
+        budgetLow: 650500,
+        budgetHigh: 1206000,
         timeline: "16–18 months",
-        team: "Founder-led producer ($0 cash) + global team (rates vary by location)",
+        team: "Founder-led producer ($0 cash) + global team (rates vary by location) • Headcount: 2 devs, 1 engineer, 2 artists, 1 sound",
         summary: `
           <p style="margin:0 0 8px; color:var(--muted); font-size:13px">
             Lowest cash burn scenario using primarily global rates. Longer timeline increases coordination risk and iteration cost.
@@ -712,7 +713,7 @@
           </ul>
         `,
         lines: [
-          { cat: "Labor (cash compensation)", low: 275000, high: 315000, note: "Core team + contractors (global-heavy)" },
+          { cat: "Labor (cash compensation)", low: 535500, high: 1071000, note: "Core team + contractors (global-heavy)" },
           { cat: "Tools / Infrastructure", low: 14000, high: 18000, note: "Licenses + services" },
           { cat: "Marketing / Launch", low: 45000, high: 60000, note: "Key art + trailer + outreach" },
           { cat: "Overhead + Contingency", low: 56000, high: 57000, note: "Admin + buffer" },
@@ -723,10 +724,10 @@
       {
         id: "full_baseline",
         name: "Full Game — Founder-Led, Mixed Geography (Baseline)",
-        budgetLow: 420000,
-        budgetHigh: 480000,
+        budgetLow: 529500,
+        budgetHigh: 959000,
         timeline: "12–14 months",
-        team: "Founder-led producer ($0 cash) + mixed-geo core + selective contractors",
+        team: "Founder-led producer ($0 cash) + mixed-geo core + selective contractors • Headcount: 2 devs, 1 engineer, 2 artists, 1 sound",
         summary: `
           <p style="margin:0 0 8px; color:var(--muted); font-size:13px">
             VC-ready baseline that balances timeline and cost using a mixed-geo team. This is the recommended planning case.
@@ -737,7 +738,7 @@
           </ul>
         `,
         lines: [
-          { cat: "Labor (cash compensation)", low: 300000, high: 340000, note: "Core team + contractors (mixed rates)" },
+          { cat: "Labor (cash compensation)", low: 409500, high: 819000, note: "Core team + contractors (mixed rates)" },
           { cat: "Tools / Infrastructure", low: 15000, high: 20000, note: "Licenses + services" },
           { cat: "Marketing / Launch", low: 50000, high: 70000, note: "Trailer + key art + creator outreach" },
           { cat: "Overhead + Contingency", low: 55000, high: 50000, note: "Admin + buffer (varies by milestone gating)" },
@@ -748,10 +749,10 @@
       {
         id: "full_senior_spine",
         name: "Full Game — Senior Spine (Faster, Lower Rework Risk)",
-        budgetLow: 520000,
-        budgetHigh: 580000,
+        budgetLow: 475750,
+        budgetHigh: 826500,
         timeline: "10–11 months",
-        team: "Senior design + senior engineering + founder-led production ($0 cash)",
+        team: "Senior design + senior engineering + founder-led production ($0 cash) • Headcount: 2 devs, 1 engineer, 2 artists, 1 sound",
         summary: `
           <p style="margin:0 0 8px; color:var(--muted); font-size:13px">
             Higher monthly burn, shorter schedule. Favored when speed-to-market and rework avoidance are priority.
@@ -762,7 +763,7 @@
           </ul>
         `,
         lines: [
-          { cat: "Labor (cash compensation)", low: 375000, high: 415000, note: "Senior design + engineering; mixed art/contractors" },
+          { cat: "Labor (cash compensation)", low: 330750, high: 661500, note: "Senior design + engineering; mixed art/contractors" },
           { cat: "Tools / Infrastructure", low: 20000, high: 26000, note: "Licenses + services" },
           { cat: "Marketing / Launch", low: 70000, high: 90000, note: "Stronger launch package" },
           { cat: "Overhead + Contingency", low: 55000, high: 49000, note: "Admin + buffer" },

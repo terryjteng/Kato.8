@@ -862,87 +862,27 @@
   // ----------------------------
   const scenarios = [
     {
-      id: "lean_200k",
-      name: "Lean execution (~$200k)",
-      budgetLow: 200000,
-      budgetHigh: 200000,
-      timeline: "≈ 20–24 months",
-      team: "Founder-led + selective contractors (1–3 core, part-time support)",
-      summary: `
-        <p><b>Lean execution</b> targets the documented minimum cost-to-ship envelope by keeping full-time headcount low and using contractors only where needed (art bursts, animation shots, audio packs, VO sessions).</p>
-        <p class="muted">CFO intent: keep downside capped while still producing a ship-ready PC build aligned to the 3-level scope.</p>
-      `,
-      lines: [
-        { cat: "Game Designer", low: 15000, high: 15000, note: "Design ownership, tuning, documentation" },
-        { cat: "Game Developer (Unity)", low: 85000, high: 85000, note: "Core systems, levels, bosses, UI" },
-        { cat: "2D Artist", low: 35000, high: 35000, note: "Characters/enemies, environments, UI art" },
-        { cat: "Animator", low: 20000, high: 20000, note: "Player/enemy animation + cutscene beats" },
-        { cat: "Audio / SFX", low: 15000, high: 15000, note: "SFX implementation + mix" },
-        { cat: "Voice Production (cutscenes)", low: 8000, high: 8000, note: "Casting + recording + edit" },
-        { cat: "QA / Playtesting", low: 7000, high: 7000, note: "External playtests + bug triage" },
-        { cat: "Tools & Software", low: 5000, high: 5000, note: "Unity add-ons, plugins, subscriptions" },
-        { cat: "Legal / Accounting", low: 5000, high: 5000, note: "Contracts, filings, bookkeeping" },
-        { cat: "Marketing (store + trailer + festivals)", low: 10000, high: 10000, note: "Earned-media-first" },
-        { cat: "Contingency", low: 0, high: 0, note: "Lean model leaves little buffer" }
-      ],
-      callout: "Lean budgets are viable only if scope discipline is strict and founder contribution is substantial. Any expansion in content, VO volume, or polish requires a re-budget.",
-      note: "All amounts are planning placeholders that roll up to the documented lean cost-to-ship envelope."
-    },
-    {
-      id: "typical_400_600",
-      name: "Typical indie scope ($400k–$600k)",
-      budgetLow: 400000,
-      budgetHigh: 600000,
+      id: "headcount_model",
+      name: "Headcount-based plan (Jr–Sr labor bands)",
+      budgetLow: 1763600,
+      budgetHigh: 3527200,
       timeline: "≈ 24–32 months",
-      team: "Small core team (3–5) + contractors (animation/audio/VO bursts)",
+      team: "Headcount: 3 devs, 1 engineer, 5 artists, 2 sound",
       summary: `
-        <p><b>Typical indie scope</b> funds a sustainable production cadence: consistent content creation across 3 major levels, bosses, and narrative cutscenes with voiced dialogue and subtitles.</p>
-        <p class="muted">CFO intent: reduce schedule slip risk via steadier staffing and a real QA/polish runway.</p>
+        <p><b>This model recalculates Corebound using the current staffing plan</b> and Jr/Mid/Sr market bands per role.</p>
+        <p class="muted">CFO intent: make total capital needs explicit when staffing is expressed as headcount over time (rather than envelope ranges).</p>
       `,
       lines: [
-        { cat: "Game Designer", low: 35000, high: 65000, note: "Systems, combat balance, narrative integration" },
-        { cat: "Game Developer (Unity)", low: 160000, high: 240000, note: "2–3 devs across production + polish" },
-        { cat: "2D Artist", low: 90000, high: 140000, note: "Character/enemy art, environments, UI/UX" },
-        { cat: "Animator", low: 45000, high: 80000, note: "Gameplay sets + cutscene animation" },
-        { cat: "Audio / SFX", low: 25000, high: 45000, note: "SFX + implementation + mix" },
-        { cat: "Voice Production (cutscenes)", low: 20000, high: 40000, note: "Casting, sessions, editing, direction" },
-        { cat: "Localization + Subtitles", low: 8000, high: 20000, note: "Subtitle pipeline + 1–3 languages" },
-        { cat: "QA / Playtesting", low: 20000, high: 40000, note: "External QA cycles + regression" },
-        { cat: "Tools & Software", low: 10000, high: 20000, note: "Unity add-ons, versioning, build tooling" },
-        { cat: "Legal / Accounting", low: 8000, high: 15000, note: "Contracts, IP, filings, bookkeeping" },
-        { cat: "Marketing (store + trailer + festivals)", low: 25000, high: 50000, note: "Trailer(s), key art, festival costs" },
-        { cat: "Contingency", low: 14000, high: 35000, note: "Schedule + vendor buffer" }
+        { cat: "Game Developers (Unity) ×3", low: 504000, high: 1008000, note: "Jr vs Sr monthly bands × timeline" },
+        { cat: "C# / Systems Engineer ×1", low: 196000, high: 392000, note: "Systems/performance spine" },
+        { cat: "Artists ×5", low: 630000, high: 1260000, note: "2D art + UI + enemy/environment production" },
+        { cat: "Sound Designers ×2", low: 196000, high: 392000, note: "SFX + implementation (milestone bursts inside timeline)" },
+        { cat: "Tools & Software", low: 25000, high: 50000, note: "Engine add-ons, plugins, repos, build tooling" },
+        { cat: "Marketing / Launch", low: 60000, high: 120000, note: "Store assets, trailer, festivals/creator outreach" },
+        { cat: "Overhead + Contingency (10% labor)", low: 152600, high: 305200, note: "Admin + buffer; scales with labor" }
       ],
-      callout: "This range is designed to survive iteration. If the game adds more levels, more bosses, or significantly more VO/cutscenes, adjust labor and audio accordingly.",
-      note: "Totals match the documented $400k–$600k typical cost-to-ship envelope."
-    },
-    {
-      id: "high_800_1000",
-      name: "High-polish execution ($800k–$1.0M)",
-      budgetLow: 800000,
-      budgetHigh: 1000000,
-      timeline: "≈ 30–38 months",
-      team: "Fuller staffing, stronger polish/QA runway, higher-fidelity art/animation/audio",
-      summary: `
-        <p><b>High-polish execution</b> funds higher asset density, more bespoke animation, stronger cinematic presentation, and a longer polish tail (QA + optimization).</p>
-        <p class="muted">CFO intent: raise production value while keeping the scope anchors (3 major levels) stable to protect schedule.</p>
-      `,
-      lines: [
-        { cat: "Game Designer", low: 80000, high: 120000, note: "Design + narrative coordination + tuning" },
-        { cat: "Game Developer (Unity)", low: 320000, high: 420000, note: "Multi-dev team + tools/perf work" },
-        { cat: "2D Artist", low: 170000, high: 240000, note: "Higher asset density + UI polish" },
-        { cat: "Animator", low: 90000, high: 140000, note: "More bespoke sets + cutscene fidelity" },
-        { cat: "Audio / SFX", low: 50000, high: 90000, note: "Bespoke SFX + mix + implementation" },
-        { cat: "Voice Production (cutscenes)", low: 60000, high: 100000, note: "More sessions, direction, post" },
-        { cat: "Localization + Subtitles", low: 20000, high: 50000, note: "More languages + QA pass" },
-        { cat: "QA / Playtesting", low: 50000, high: 90000, note: "Sustained external QA + regression" },
-        { cat: "Tools & Software", low: 20000, high: 40000, note: "Pipeline + build automation + plugins" },
-        { cat: "Legal / Accounting", low: 15000, high: 30000, note: "More vendor contracts + review cycles" },
-        { cat: "Marketing (store + trailer + festivals)", low: 60000, high: 120000, note: "Higher production marketing assets" },
-        { cat: "Contingency", low: 65000, high: 90000, note: "Risk buffer for polish tail" }
-      ],
-      callout: "High-polish is where burn rate can quietly explode. Treat scope anchors as hard constraints and track monthly burn against milestone gates.",
-      note: "Totals match the documented $800k–$1M high-polish cost-to-ship envelope."
+      callout: "This replaces earlier envelope ranges with a staffing-driven model. If any headcount is fractional/part-time, reduce labor proportionally.",
+      note: "Low = Jr band; High = Sr band. Replace with signed offers/quotes. No scope expansion assumed."
     }
   ];
 
@@ -1213,7 +1153,8 @@
     opt.textContent = s.name;
     scenarioSelect.appendChild(opt);
   });
-  scenarioSelect.value = scenarios[1].id;
+  // Default to the first scenario (safe even if there is only one)
+  scenarioSelect.value = scenarios[0].id;
 
   scenarioSelect.addEventListener("change", render);
   [f_price, f_platform, f_mktpct, f_mktfixed, f_m1, f_decay, f_spread].forEach(el => el.addEventListener("input", renderForecast));
