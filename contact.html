@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Contact — Kato.8 Studios LLC</title>
+    <meta name="description" content="Contact Kato.8 Studios for funding, partnerships, or press." />
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Contact-page-only styles (scoped to avoid impacting other pages) -->
+    <style>
+      body.page--contact .grid--2 { align-items: start; }
+
+      body.page--contact .contactcard__row{
+        display:flex;
+        align-items:flex-start;
+        justify-content:space-between;
+        gap:12px;
+        flex-wrap:wrap;
+        margin-top:12px;
+      }
+
+      body.page--contact .copychip{
+        display:flex;
+        align-items:center;
+        gap:10px;
+        flex-wrap:wrap;
+      }
+
+      body.page--contact .copychip code{
+        font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
+        padding:7px 10px;
+        border-radius:999px;
+        border:1px solid rgba(255,255,255,.12);
+        background:rgba(255,255,255,.03);
+        color:var(--text);
+      }
+
+      body.page--contact .contactbullets{
+        display:grid;
+        gap:12px;
+        margin-top:14px;
+      }
+
+      body.page--contact .contactbullet{
+        border-radius:var(--r-md, 14px);
+        border:1px solid rgba(255,255,255,.10);
+        background:rgba(255,255,255,.03);
+        padding:12px;
+      }
+
+      body.page--contact .contactbullet__title{
+        font-weight:800;
+        letter-spacing:.02em;
+      }
+      body.page--contact .contactbullet__desc{
+        margin-top:6px;
+        color:var(--muted);
+        line-height:1.65;
+      }
+
+      body.page--contact .formcard .micro{ display:block; }
+      body.page--contact .formgrid{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:12px;
+        margin-top:8px;
+      }
+      body.page--contact .formgrid__full{ grid-column:1 / -1; }
+
+      body.page--contact .input{
+        width:100%;
+        margin-top:8px;
+        padding:12px 12px;
+        border-radius:12px;
+        border:1px solid rgba(255,255,255,.12);
+        background:rgba(255,255,255,.02);
+        color:var(--text);
+        outline:none;
+      }
+      body.page--contact .input:focus{
+        border-color: rgba(0,230,255,.28);
+        box-shadow: 0 0 0 1px rgba(0,230,255,.10) inset, 0 0 22px rgba(0,230,255,.10);
+      }
+      body.page--contact textarea.input{
+        resize: vertical;
+        min-height: 160px;
+      }
+
+      body.page--contact .formstatus{
+        display:none;
+        margin-top:12px;
+        border-radius:var(--r-md, 14px);
+        border:1px solid rgba(255,255,255,.10);
+        background:rgba(255,255,255,.03);
+        padding:12px;
+        color:var(--muted);
+      }
+
+      body.page--contact .formactions{
+        display:flex;
+        gap:10px;
+        justify-content:flex-end;
+        flex-wrap:wrap;
+        margin-top:12px;
+      }
+
+      body.page--contact .supportlist{
+        margin:10px 0 0;
+        padding-left:18px;
+        color:var(--muted);
+        line-height:1.7;
+      }
+      body.page--contact .supportactions{
+        display:flex;
+        flex-wrap:wrap;
+        gap:10px;
+        margin-top:12px;
+      }
+
+      /* Make Support card stand out as crowdfunding/GoFundMe */
+      body.page--contact .card--crowdfunding {
+        background: linear-gradient(135deg, rgba(0, 230, 255, 0.12) 0%, rgba(138, 43, 226, 0.10) 100%), var(--panel);
+        border: 2px solid rgba(0, 230, 255, 0.35);
+        box-shadow: 0 0 0 1px rgba(0, 230, 255, 0.15) inset, 
+                    0 0 30px rgba(0, 230, 255, 0.20),
+                    var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      body.page--contact .card--crowdfunding::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, 
+          rgba(0, 230, 255, 0.8) 0%, 
+          rgba(138, 43, 226, 0.8) 50%, 
+          rgba(255, 79, 216, 0.8) 100%);
+        box-shadow: 0 0 12px rgba(0, 230, 255, 0.5);
+      }
+
+      body.page--contact .card--crowdfunding .eyebrow {
+        color: rgb(0, 230, 255);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      body.page--contact .card--crowdfunding .h3 {
+        color: var(--text);
+        text-shadow: 0 0 20px rgba(0, 230, 255, 0.3);
+      }
+
+      body.page--contact .gofundme-logo {
+        max-width: 180px;
+        height: auto;
+        margin: 16px 0 12px;
+        display: block;
+        background: transparent;
+        filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+      }
+
+      @media (max-width: 980px){
+        body.page--contact .formgrid{ grid-template-columns:1fr; }
+        body.page--contact .formactions{ justify-content:flex-start; }
+      }
+    </style>
+  </head>
+  <body class="page--contact">
+    <header class="header">
+      <div class="container header__inner">
+        <a class="brand" href="index.html">
+          <span class="brand__mark">
+            <img src="Art/Branding/Kato_logo_01.jpg" alt="Kato.8 Studios logo" class="brand__logo" />
+          </span>
+          <span class="brand__text">
+            <span class="brand__name">Kato.8 Studios LLC</span>
+            <span class="brand__tag">Retro × Modern — in gameplay and aesthetics</span>
+          </span>
+        </a>
+
+        <button class="navbtn" id="navbtn" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
+          <span></span><span></span><span></span>
+        </button>
+
+        <nav class="nav" id="nav">
+          <a class="nav__link" href="games.html">Games</a>
+          <a class="nav__link" href="updates.html">Updates</a>
+          <a class="nav__link" href="about.html">About</a>
+          <a class="nav__link" href="investor-options.html">Investor Options</a>
+          <a class="nav__link nav__link--cta" href="contact.html">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="pagehead">
+        <div class="container">
+          <h1 class="h1">Contact</h1>
+          <p class="sub">Reach out for funding conversations, press, or general inquiries.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="grid grid--2">
+            <!-- LEFT: context + form (form moved under contact card) -->
+            <div>
+              <div class="card card--glow">
+                <p class="eyebrow">Contact</p>
+                <h2 class="h2" style="margin-top:12px;">Let’s connect</h2>
+                <p class="p">
+                  If you’re reaching out about funding, partnership opportunities, press, or collaboration, send a note with
+                  what you’re looking for and your timeline.
+                </p>
+
+                <div class="contactcard__row">
+                  <div class="copychip">
+                    <span class="micro micro--muted">Email</span>
+                    <code id="contactEmail">terryt.kato.8@gmail.com</code>
+                  </div>
+                  <button class="btn btn--sm btn--line" type="button" data-copy="#contactEmail">Copy email</button>
+                </div>
+
+                <div class="contactbullets">
+                  <div class="contactbullet">
+                    <div class="contactbullet__title">What to include</div>
+                    <div class="contactbullet__desc">Project name, your goal (press / funding / partnership), and timeline.</div>
+                  </div>
+                  <div class="contactbullet">
+                    <div class="contactbullet__title">Milestone funding</div>
+                    <div class="contactbullet__desc">If proposing milestone funding, include budget range + deliverables (demo / alpha / beta).</div>
+                  </div>
+                </div>
+
+                <div class="pillrow">
+                  <span class="pill">Funding</span>
+                  <span class="pill">Press</span>
+                  <span class="pill">Partnerships</span>
+                </div>
+              </div>
+
+              <!-- Contact form integrated with Formspree. Moved under the contact card -->
+              <form id="contactForm" class="card formcard" action="https://formspree.io/f/maqygdnd" method="POST" style="margin-top:16px;">
+                <input type="hidden" name="_subject" value="Website contact form message" />
+                <input type="hidden" name="_next" value="contact.html?success=1" />
+
+                <p class="eyebrow">Message</p>
+                <h2 class="h2" style="margin-top:12px;">Send a note</h2>
+                <p class="sub" style="margin-top:8px;">We’ll route it to the right place and reply as soon as we can.</p>
+
+                <div class="formgrid">
+                  <label class="micro">
+                    Name
+                    <input class="input" type="text" name="name" autocomplete="name" required />
+                  </label>
+
+                  <label class="micro">
+                    Email
+                    <input class="input" type="email" name="_replyto" autocomplete="email" required />
+                  </label>
+
+                  <label class="micro formgrid__full">
+                    Message
+                    <textarea class="input" name="message" rows="7" required></textarea>
+                  </label>
+                </div>
+
+                <div id="formStatus" class="formstatus" aria-live="polite"></div>
+
+                <div class="formactions">
+                  <button class="btn btn--ghost" type="reset">Clear</button>
+                  <button class="btn btn--primary" type="submit">Send message</button>
+                </div>
+
+                <div class="micro micro--muted" style="margin-top:10px;">
+                  By sending, you agree we can respond to your email address.
+                </div>
+              </form>
+            </div>
+
+            <!-- RIGHT: support card (moved to right column) -->
+            <div>
+              <div class="card card--crowdfunding">
+                <p class="eyebrow">🎉 Support</p>
+                <h3 class="h3">Help launch Kato.8 — early studio funding</h3>
+                <img src="Art/Branding/GoFundMe-Logo-20111.png" alt="GoFundMe" class="gofundme-logo">
+                <p class="p">Your contribution helps cover early studio setup and production milestones.</p>
+
+                <ul class="supportlist">
+                  <li><b>GoFundMe:</b> direct support for studio setup + early production.</li>
+                  <li><b>Milestone funding:</b> game-specific funding tied to deliverables and timelines.</li>
+                </ul>
+
+                <div class="supportactions">
+                  <button class="btn btn--primary" type="button" data-open-modal="gofundmeModal">Support on GoFundMe</button>
+                  <a class="btn btn--line" href="#contactForm">Discuss milestone funding</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer__inner">
+        <div>
+          <div class="footer__brand">© <span id="year"></span> Kato.8 Studios LLC</div>
+          <div class="footer__meta">Crowdfunding • Game-only funding • Milestone updates</div>
+        </div>
+        <div class="footer__right">
+          <a href="games.html">Games</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- GoFundMe modal -->
+    <div class="modal" id="gofundmeModal" aria-hidden="true">
+      <div class="modal__overlay" data-close-modal></div>
+      <div class="modal__panel modal__panel--support" role="dialog" aria-modal="true" aria-label="Support Kato.8 on GoFundMe">
+        <button class="modal__close" type="button" data-close-modal aria-label="Close">×</button>
+        <p class="eyebrow">Support</p>
+        <h3 class="h3">Support Kato.8 on GoFundMe</h3>
+        <p class="p">Your support helps cover early studio setup and production milestones.</p>
+        <div class="pillrow">
+          <span class="pill">LLC setup</span>
+          <span class="pill">Software & tools</span>
+          <span class="pill">Prototype + demo milestones</span>
+        </div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;justify-content:center">
+          <a class="btn btn--primary" href="https://www.gofundme.com/f/help-launch-my-retro-game-studio" target="_blank" rel="noopener">Open GoFundMe</a>
+          <button class="btn btn--line" type="button" data-close-modal>Close</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Contact form submission via Fetch to Formspree
+      (function () {
+        const form = document.getElementById('contactForm');
+        if (!form) return;
+
+        const status = document.getElementById('formStatus');
+
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+
+          status.style.display = 'block';
+          status.style.color = 'var(--muted)';
+          status.textContent = 'Sending...';
+          status.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+          const action = form.getAttribute('action');
+          const formData = new FormData(form);
+
+          fetch(action, {
+            method: 'POST',
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+          }).then(function (response) {
+            if (response.ok) {
+              status.style.color = 'var(--good, lightgreen)';
+              status.textContent = "Thanks — your message was sent. We'll reply soon.";
+              form.reset();
+            } else {
+              response.json().then(function (data) {
+                status.style.color = 'var(--bad, salmon)';
+                status.textContent = data.error || 'There was a problem sending your message.';
+              }).catch(function () {
+                status.style.color = 'var(--bad, salmon)';
+                status.textContent = 'There was a problem sending your message.';
+              });
+            }
+          }).catch(function () {
+            status.style.color = 'var(--bad, salmon)';
+            status.textContent = 'Network error. Please try again later.';
+          });
+        });
+      })();
+
+      // Copy email button (scoped by data-copy attribute)
+      (function(){
+        const btns = document.querySelectorAll('[data-copy]');
+        btns.forEach(function(btn){
+          btn.addEventListener('click', function(){
+            const sel = btn.getAttribute('data-copy');
+            const node = sel ? document.querySelector(sel) : null;
+            const text = node ? node.textContent.trim() : '';
+            if(!text) return;
+
+            const flash = function(msg){
+              const prev = btn.textContent;
+              btn.textContent = msg;
+              setTimeout(function(){ btn.textContent = prev; }, 1200);
+            };
+
+            if(navigator.clipboard && navigator.clipboard.writeText){
+              navigator.clipboard.writeText(text).then(function(){ flash('Copied'); }).catch(function(){ flash('Copy failed'); });
+            } else {
+              const ta = document.createElement('textarea');
+              ta.value = text;
+              ta.setAttribute('readonly','');
+              ta.style.position = 'absolute';
+              ta.style.left = '-9999px';
+              document.body.appendChild(ta);
+              ta.select();
+              try{
+                document.execCommand('copy');
+                flash('Copied');
+              } catch(e){
+                flash('Copy failed');
+              }
+              document.body.removeChild(ta);
+            }
+          });
+        });
+      })();
+    </script>
+
+    <script src="app.js"></script>
+  </body>
+</html>

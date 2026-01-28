@@ -1,0 +1,1514 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kato.8 Studios — Corebound Financial Breakdown</title>
+  <style>
+    :root{
+      --bg:#07070b;
+      --panel:#0f0f18;
+      --panel2:#0c0c14;
+      --text:#f3f3ff;
+      --muted:#b9b9d6;
+      --line:rgba(255,255,255,.12);
+      --accent:#ff4fd8;
+      --accent2:#6be4ff;
+      --good:#8dffb3;
+      --warn:#ffd36b;
+      --bad:#ff7a7a;
+      --shadow: 0 18px 40px rgba(0,0,0,.45);
+      --radius:18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: radial-gradient(900px 500px at 20% -10%, rgba(255,79,216,.20), transparent 65%),
+                  radial-gradient(900px 500px at 85% 0%, rgba(107,228,255,.16), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.35;
+    }
+
+    .wrap{ max-width:1100px; margin:0 auto; padding:44px 18px 70px; }
+
+    .sitehdr{
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      margin-bottom:18px;
+      padding:12px 14px;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: 16px;
+      background: rgba(0,0,0,.18);
+    }
+    .brand{
+      display:flex; flex-direction:column; gap:2px;
+    }
+    .brand .name{
+      font-weight:900; letter-spacing:.2px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .spark{
+      width:10px; height:10px; border-radius:999px;
+      background: var(--accent);
+      box-shadow:0 0 18px rgba(255,79,216,.45);
+      display:inline-block;
+    }
+    .brand .tag{ font-size:12px; color:var(--muted); }
+    .nav{
+      display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-end;
+      align-items:center;
+    }
+    .nav a{
+      color:var(--muted);
+      font-size:13px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid transparent;
+      text-decoration:none;
+    }
+    .nav a:hover{
+      color:var(--text);
+      border-color: rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+    }
+
+    .top{
+      display:flex; flex-wrap:wrap; gap:14px;
+      align-items:flex-end; justify-content:space-between;
+      margin-bottom:18px;
+    }
+
+    h1{
+      margin:0;
+      font-size: clamp(26px, 3vw, 40px);
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin:6px 0 0;
+      color:var(--muted);
+      max-width:850px;
+      font-size: 15px;
+    }
+
+    .badge-row{
+      display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;
+    }
+    .badge{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--muted);
+      display:inline-flex; align-items:center; gap:8px;
+      white-space:nowrap;
+    }
+    .dot{ width:8px; height:8px; border-radius:999px; background:var(--accent); box-shadow:0 0 14px rgba(255,79,216,.45); }
+    .dot2{ background:var(--accent2); box-shadow:0 0 14px rgba(107,228,255,.35); }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:14px;
+      margin-top:18px;
+    }
+    @media (max-width: 920px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:16px 16px 12px;
+      border-bottom:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,79,216,.10), rgba(255,255,255,0));
+    }
+    .card .bd{ padding:16px; }
+
+    .controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+    .pillset{
+      display:flex;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.25);
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .pill{
+      padding:10px 12px;
+      font-size:13px;
+      cursor:pointer;
+      color:var(--muted);
+      background:transparent;
+      border:0;
+    }
+    .pill[aria-selected="true"]{
+      color:var(--text);
+      background: linear-gradient(180deg, rgba(255,79,216,.20), rgba(255,255,255,.02));
+    }
+
+    select{
+      appearance:none;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.25);
+      color:var(--text);
+      padding:10px 12px;
+      font-size:13px;
+      outline:none;
+    }
+
+    .kpis{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+      margin-top:14px;
+    }
+    @media (max-width: 560px){
+      .kpis{ grid-template-columns: 1fr; }
+    }
+    .kpi{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      background: rgba(0,0,0,.22);
+    }
+    .kpi .lbl{ font-size:12px; color:var(--muted); }
+    .kpi .val{ margin-top:6px; font-size:18px; font-weight:700; letter-spacing:.2px; }
+    .kpi .hint{ margin-top:6px; font-size:12px; color:var(--muted); }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:12px;
+      font-size:13px;
+    }
+    th, td{
+      text-align:left;
+      padding:10px 8px;
+      border-bottom:1px solid var(--line);
+      vertical-align:top;
+    }
+    th{ color:var(--muted); font-weight:600; font-size:12px; letter-spacing:.2px; }
+    tr:last-child td{ border-bottom:0; }
+
+    .money{
+      font-variant-numeric: tabular-nums;
+      white-space:nowrap;
+      font-weight:650;
+      font-family: var(--mono);
+    }
+    .note{
+      margin-top:12px;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .callout{
+      border:1px dashed rgba(255,79,216,.45);
+      background: rgba(255,79,216,.07);
+      padding:12px;
+      border-radius:16px;
+      color:var(--muted);
+      font-size:12px;
+      margin-top:12px;
+    }
+    .callout strong{ color:var(--text); }
+
+    .list{
+      margin:0; padding-left:18px; color:var(--muted);
+      font-size:13px;
+    }
+    .list li{ margin:8px 0; }
+
+    .footer{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:12px;
+      border-top:1px solid var(--line);
+      padding-top:14px;
+    }
+
+    .fieldgrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
+    @media (max-width: 980px){ .fieldgrid{ grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 520px){ .fieldgrid{ grid-template-columns: 1fr; } }
+    .field{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      background: rgba(0,0,0,.22);
+    }
+    .field label{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+    .field input, .field select{
+      width:100%;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.25);
+      color:var(--text);
+      padding:10px 12px;
+      font-size:13px;
+      outline:none;
+      font-family: var(--mono);
+    }
+    .btn{
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.16);
+      background: linear-gradient(180deg, rgba(255,79,216,.22), rgba(255,255,255,.03));
+      color:var(--text);
+      padding:10px 12px;
+      font-weight:800;
+      letter-spacing:.2px;
+      cursor:pointer;
+      font-size:13px;
+    }
+    .btn:hover{ border-color: rgba(255,255,255,.28); }
+
+    .twocol{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+    }
+    @media (max-width: 920px){
+      .twocol{ grid-template-columns: 1fr; }
+    }
+
+    /* Compact scenario summary grid (small visible separation) */
+    .f-summary-grid{
+      display:flex;
+      gap:8px;
+      margin-top:8px;
+      align-items:stretch;
+    }
+    .scenario-block{
+      flex:1 1 0;
+      padding:8px 10px;
+      border-radius:10px;
+      background: rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.04);
+      font-size:13px;
+    }
+    .scenario-block .lbl{ color:var(--muted); font-size:12px; }
+    .scenario-block .val{ margin-top:6px; font-weight:800; }
+    .scenario-block.small{ font-size:12px; padding:6px 8px; border-radius:8px; }
+
+    /* Filter row styling */
+    .filter-row{ display:flex; gap:8px; align-items:center; margin-top:10px; flex-wrap:wrap; }
+    .filter-row label{ font-size:12px; color:var(--muted); margin-right:6px; }
+    .filter-row select{ border-radius:10px; padding:8px 10px; background: rgba(0,0,0,.25); color:var(--text); border:1px solid var(--line); }
+  
+    /* Timeline Compression layout */
+    .tc-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; }
+    .tc-actions{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .tc-grid{ display:grid; grid-template-columns: 1.25fr .75fr; gap:14px; }
+    @media (max-width: 920px){ .tc-grid{ grid-template-columns: 1fr; } }
+    .tc-panel{
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      padding:14px;
+      background: rgba(0,0,0,.22);
+    }
+    .tc-inputs{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    @media (max-width: 720px){ .tc-inputs{ grid-template-columns: 1fr; } }
+    #timeline-compression select{
+      width:100%;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.25);
+      color:var(--text);
+      padding:9px 10px;
+      font-size:13px;
+      outline:none;
+    }
+    #timeline-compression table{ margin-top:8px; }
+    #timeline-compression th, #timeline-compression td{ padding:10px 8px; }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="sitehdr">
+      <div class="brand">
+        <div class="name"><span class="spark"></span> <a href="index.html" style="color:var(--text); text-decoration:none;">Kato.8 Studios LLC</a></div>
+        <div class="tag">Retro × Modern — in gameplay and aesthetics</div>
+      </div>
+      <div class="nav">
+        <a href="games.html">Games</a>
+        <a href="updates.html">Updates</a>
+        <a href="about.html">About</a>
+        <a href="investor-options.html">Investor Options</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+
+    <div class="top">
+      <div>
+        <h1>Corebound — Financial Breakdown (Full Game)</h1>
+        <p class="sub">
+          CFO-style budgeting and forecasting for a narrative-driven 2D action platformer in Unity (PC-first).
+          This page ties <b>budget → milestones → roadmap → revenue → break-even</b> to keep expectations measurable.
+        </p>
+
+        <!-- Quick action -->
+        <div style="margin-top:14px;">
+          <a href="#twelve-month-plan" class="btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+            Jump to 12-Month Plan
+            <span aria-hidden="true" style="opacity:.8;">↓</span>
+          </a>
+        </div>
+
+        <!-- Metadata badges -->
+        <div class="badge-row" style="margin-top:14px;">
+          <div class="badge"><span class="dot"></span> Milestone-gated spend (proof before scale)</div>
+          <div class="badge"><span class="dot dot2"></span> Break-even + 12-month revenue model</div>
+          <div class="badge" style="border-color: rgba(107,228,255,.35); background: rgba(107,228,255,.08);">
+            <span class="dot dot2"></span> Shows added headcount + added cash needed
+          </div>
+        </div>
+
+        <!-- Primary CTA -->
+        <div class="badge-row" style="margin-top:18px;">
+          <a class="btn" href="investor-options.html" style="border-color: rgba(0,230,255,.35); background: linear-gradient(180deg, rgba(0,230,255,.18), rgba(0,230,255,.08)); color:var(--text); font-weight:900; box-shadow: 0 0 20px rgba(0,230,255,.15); text-decoration:none; font-size:14px; padding:12px 16px;">💼 Investor Options</a>
+        </div>
+
+        <!-- Secondary navigation -->
+        <div class="badge-row" style="margin-top:12px;">
+          <a class="btn" href="financials-corebound.html" style="border-color: rgba(0,230,255,.2); background: linear-gradient(180deg, rgba(0,230,255,.1), rgba(0,230,255,.05)); text-decoration:none; font-weight:900;">Corebound</a>
+          <a class="btn" href="financials-lastlight.html" style="border-color: rgba(255,255,255,.16); background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); text-decoration:none;">Last Light</a>
+          <a class="btn" href="financials-bigbosscleanup.html" style="border-color: rgba(255,255,255,.16); background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); text-decoration:none;">Big Boss Cleanup</a>
+        </div>
+        <div class="callout" style="margin-top:12px;">
+          <strong>Scope anchors:</strong> 3 major levels, 3 mini-bosses, 1 main boss; upgrades earned via bosses/events; in‑engine cutscenes with fully voiced dialogue and mandatory subtitles.
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- LEFT: INTERACTIVE BREAKDOWN -->
+      <div class="card">
+        <div class="hd">
+          <div class="controls">
+            <div class="pillset" role="tablist" aria-label="Budget type">
+              <button class="pill" aria-selected="true" disabled>Full Game</button>
+            </div>
+            <select id="scenario"></select>
+          </div>
+
+          <div class="kpis">
+            <div class="kpi">
+              <div class="lbl">Budget Range</div>
+              <div class="val" id="kpiBudget">$—</div>
+              <div class="hint">Total estimate (range)</div>
+            </div>
+            <div class="kpi">
+              <div class="lbl">Timeline</div>
+              <div class="val" id="kpiTimeline">—</div>
+              <div class="hint">Calendar months</div>
+            </div>
+            <div class="kpi">
+              <div class="lbl">Team Model</div>
+              <div class="val" id="kpiTeam">—</div>
+              <div class="hint">Core roles / staffing</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bd">
+          <div id="summary"></div>
+
+          <table aria-label="Line item budget table">
+            <thead>
+              <tr>
+                <th style="width:46%">Cost Category</th>
+                <th style="width:22%">Low</th>
+                <th style="width:22%">High</th>
+                <th style="width:10%">Notes</th>
+              </tr>
+            </thead>
+            <tbody id="lines"></tbody>
+          </table>
+
+          <div class="callout" id="callout" style="margin-top:12px;"></div>
+          <div class="footer" id="note"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: MILESTONES + ROADMAP -->
+      <div class="card">
+        <div class="hd">
+          <div style="font-weight:900; letter-spacing:.2px">Milestones & Roadmap (Risk-Gated)</div>
+          <div style="color:var(--muted); font-size:12px; margin-top:6px">
+            Funding is staged to reduce risk before scaling burn. Each gate maps to concrete deliverables and realistic timeline bands.
+          </div>
+        </div>
+        <div class="bd">
+          <div class="twocol">
+            <div>
+              <div style="font-weight:800; margin-bottom:6px;">Funding stages (capital unlocks)</div>
+              <ul class="list">
+                <li><b>Stage 0 — Pre‑Seed:</b> concept + prototype, documentation, tooling. (<span class="muted">$0–$25k</span>)</li>
+                <li><b>Stage 2 — Seed II:</b> production ramp (levels, bosses, narrative beats), art/audio consistency, internal QA. (<span class="muted">$250k–$500k</span>)</li>
+                <li><b>Stage 3 — Completion:</b> polish, perf/optimization, Steam readiness + compliance. (<span class="muted">$100k–$250k</span>)</li>
+                <li><b>Stage 4 — Post‑Launch (optional):</b> patches, light marketing support, analytics. (<span class="muted">$25k–$100k</span>)</li>
+              </ul>
+              <div class="callout" style="margin-top:10px;">
+                <strong>CFO control:</strong> spend increases only after the previous build proves systems and scope are stable (feature freeze discipline).
+              </div>
+            </div>
+            <div>
+              <div style="font-weight:800; margin-bottom:6px;">Timeline bands (realistic)</div>
+              <ul class="list">
+                <li><b>Pre‑Production:</b> 4–8 months (systems validation + playable proof)</li>
+                <li><b>Production:</b> 12–24 months (content scaling + iteration)</li>
+                <li><b>Post‑Production:</b> 3–6 months (QA, marketing assets, launch stabilization)</li>
+                <li><b>Total:</b> ~20–38 months end‑to‑end</li>
+              </ul>
+              <div class="callout" style="margin-top:10px;">
+                <strong>Roadmap note:</strong> Console ports are treated as post‑launch, separately budgeted work (PC-first).
+              </div>
+            </div>
+          </div>
+
+          <hr class="sep" />
+
+          <div style="font-weight:800; margin-bottom:6px;">What this financial model covers</div>
+          <ul class="list">
+            <li>Core production labor for: <b>Game Designer, Game Developer (Unity), Artist (2D), Animator, SFX/Audio</b> + essential support costs.</li>
+            <li>Cutscene voice production (recording + editing) and subtitle/localization prep (subtitles are mandatory).</li>
+            <li>QA/playtest, tooling, and launch-readiness costs relevant to a Steam PC release.</li>
+          </ul>
+
+          <div style="font-weight:800; margin-top:12px; margin-bottom:6px;">Not included by default</div>
+          <ul class="list">
+            <li>Console port + certification</li>
+            <li>Live-ops/content cadence beyond light post-launch support</li>
+            <li>Large-scale paid UA assumptions (model supports earned-media-first marketing)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CFO ASSUMPTIONS APPENDIX -->
+    <div class="card" style="margin-top:14px;">
+      <div class="hd">
+        <div style="font-weight:900; letter-spacing:.2px">CFO Assumptions & Non-Assumptions</div>
+        <div style="color:var(--muted); font-size:12px; margin-top:6px">
+          Clarifies what the budgets and forecast assume—and what they explicitly do not.
+        </div>
+      </div>
+      <div class="bd">
+        <div class="twocol">
+          <div>
+            <div style="font-weight:800; margin-bottom:6px;">Key assumptions</div>
+            <ul class="list">
+              <li><b>Lean core team:</b> small indie staffing with targeted contractor support; scope remains within the documented production summary.</li>
+              <li><b>Risk gates:</b> scale only after systems and content pipeline are proven.</li>
+              <li><b>Marketing:</b> Steam page quality, demos/festivals, creator outreach; optional light paid spend.</li>
+              <li><b>PC-first:</b> controller support planned; console is post-launch consideration.</li>
+            </ul>
+          </div>
+          <div>
+            <div style="font-weight:800; margin-bottom:6px;">What we do <u>not</u> assume</div>
+            <ul class="list">
+              <li><b>No AAA staffing:</b> budgets do not assume a fully-loaded AA/AAA salary structure.</li>
+              <li><b>No miracle timeline:</b> we respect the ~20–38 month realistic band for a narrative action indie.</li>
+              <li><b>No paid-UA dependency:</b> break-even math works without ad-driven growth assumptions.</li>
+              <li><b>No scope creep:</b> adding major levels/bosses/VO volume would require re-budgeting.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORECASTING -->
+    <div class="card" style="margin-top:14px;">
+      <div class="hd">
+        <div style="font-weight:900; letter-spacing:.2px">Forecasting (Revenue + Break-even)</div>
+        <div style="color:var(--muted); font-size:12px; margin-top:6px">
+          A simplified 12-month model to estimate units needed to recoup the selected budget range and how quickly revenue can return capital.
+        </div>
+      </div>
+      <div class="bd">
+        <div class="fieldgrid">
+          <div class="field">
+            <label>Game Price ($)</label>
+            <input id="f_price" type="number" min="0" step="0.5" value="24.99" />
+          </div>
+          <div class="field">
+            <label>Platform Fee (%)</label>
+            <input id="f_platform" type="number" min="0" max="100" step="0.5" value="30" />
+          </div>
+          <div class="field">
+            <label>Marketing % of Gross</label>
+            <input id="f_mktpct" type="number" min="0" max="100" step="0.5" value="10" />
+          </div>
+          <div class="field">
+            <label>Fixed Launch Marketing ($)</label>
+            <input id="f_mktfixed" type="number" min="0" step="500" value="15000" />
+          </div>
+
+          <div class="field">
+            <label>Month 1 Units (Base)</label>
+            <input id="f_m1" type="number" min="0" step="100" value="10000" />
+          </div>
+          <div class="field">
+            <label>Monthly Decay (%)</label>
+            <input id="f_decay" type="number" min="0" max="50" step="0.5" value="10" />
+          </div>
+          <div class="field">
+            <label>Scenario Spread (%)</label>
+            <input id="f_spread" type="number" min="0" max="60" step="1" value="30" />
+          </div>
+          <div class="field" style="display:flex; align-items:end;">
+            <button class="btn" id="f_csv" type="button" style="width:100%;">Download Forecast CSV</button>
+          </div>
+        </div>
+
+        <div class="callout" id="f_summary" style="margin-top:12px;">
+          <strong>Summary:</strong> —
+        </div>
+
+        <div class="filter-row" id="f_filters" aria-label="Forecast filters">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <label for="filterScenario">Scenario</label>
+            <select id="filterScenario">
+              <option value="all">All</option>
+              <option value="Low">Low</option>
+              <option value="Base">Base</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:6px;">
+            <label for="filterMetric">Metric</label>
+            <select id="filterMetric">
+              <option value="all">All</option>
+              <option value="units">Units</option>
+              <option value="gross">Gross</option>
+              <option value="net">Net</option>
+            </select>
+          </div>
+        </div>
+
+        <table aria-label="Forecast table" style="margin-top:10px;">
+          <thead></thead>
+          <tbody id="f_rows"></tbody>
+        </table>
+
+        <div class="footer" style="margin-top:10px;">
+          This model is a directional planning tool. Replace assumptions (price, units, marketing) with validated data as wishlists, demo metrics, and launch timing become known.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+    <!-- <a id="twelve-month-plan"></a>TIMELINE COMPRESSION PLANNER -->
+    <div class="card" style="margin-top:14px;" id="timeline-compression">
+      <div class="hd">
+        <div class="tc-head">
+          <div>
+            <div style="font-weight:900; letter-spacing:.2px">Timeline Compression Planner (Target: 12 months)</div>
+            <div style="color:var(--muted); font-size:12px; margin-top:6px">
+              Add headcount where the bottleneck lives (engineering + content assembly first) to estimate schedule compression and incremental cash.
+              Outputs reconcile as: <span class="money">Incremental Burn × New Timeline</span>.
+            </div>
+          </div>
+          <div class="tc-actions">
+            <button class="btn" id="tc_preset_12mo" type="button">Preset: 12‑month strike team</button>
+            <button class="btn" id="tc_reset" type="button" style="background:rgba(255,255,255,.03); font-weight:700;">Reset</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bd">
+        <div class="tc-grid">
+          <!-- Inputs -->
+          <div class="tc-panel">
+            <div style="font-weight:800; margin-bottom:8px;">Inputs</div>
+
+            <div class="tc-inputs">
+              <div class="field">
+                <label>Baseline timeline (months)</label>
+                <input id="tc_baseline_months" type="number" min="6" max="48" step="1" value="22" />
+              </div>
+
+              <div class="field">
+                <label>Target timeline (months)</label>
+                <input id="tc_target_months" type="number" min="6" max="24" step="1" value="12" />
+              </div>
+
+              <div class="field">
+                <label>Compression floor (months)</label>
+                <input id="tc_floor" type="number" min="6" max="18" step="1" value="10" />
+              </div>
+
+              <div class="field">
+                <label>Hours per month (assumption)</label>
+                <input id="tc_hours_per_month" type="number" min="120" max="220" step="0.1" value="173.33" />
+              </div>
+            </div>
+
+            <div style="height:10px"></div>
+
+            <div style="font-weight:800; margin:10px 0 6px;">Headcount adds (FTE)</div>
+            <div style="color:var(--muted); font-size:12px; margin-bottom:10px">
+              These are incremental hires on top of your baseline team.
+            </div>
+
+            <table aria-label="Timeline compression adds">
+              <thead>
+                <tr>
+                  <th style="width:38%">Department</th>
+                  <th style="width:16%">Current</th>
+                  <th style="width:18%">Add</th>
+                  <th style="width:28%">Monthly rate (USD)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>Engineering</b><div style="color:var(--muted); font-size:12px">Unity engineer</div></td>
+                  <td style="color:var(--muted); font-size:12px">—</td>
+                  <td>
+                    <select id="tc_add_dev">
+                      <option value="0" selected>+0.00</option>
+                      <option value="0.5">+0.50</option>
+                      <option value="1">+1.00</option>
+                      <option value="2">+2.00</option>
+                    </select>
+                  </td>
+                  <td><input id="tc_rate_dev" type="number" min="0" step="1" value="8083" style="width:140px;" /></td>
+                </tr>
+
+                <tr>
+                  <td><b>Content Assembly</b><div style="color:var(--muted); font-size:12px">Level/content implementer</div></td>
+                  <td style="color:var(--muted); font-size:12px">—</td>
+                  <td>
+                    <select id="tc_add_impl">
+                      <option value="0" selected>+0.00</option>
+                      <option value="0.5">+0.50</option>
+                      <option value="1">+1.00</option>
+                      <option value="2">+2.00</option>
+                    </select>
+                  </td>
+                  <td><input id="tc_rate_impl" type="number" min="0" step="1" value="7917" style="width:140px;" /></td>
+                </tr>
+
+                <tr>
+                  <td><b>Art</b><div style="color:var(--muted); font-size:12px">2D artist</div></td>
+                  <td style="color:var(--muted); font-size:12px">—</td>
+                  <td>
+                    <select id="tc_add_art">
+                      <option value="0" selected>+0.00</option>
+                      <option value="0.5">+0.50</option>
+                      <option value="1">+1.00</option>
+                      <option value="2">+2.00</option>
+                    </select>
+                  </td>
+                  <td><input id="tc_rate_art" type="number" min="0" step="1" value="5208" style="width:140px;" /></td>
+                </tr>
+
+                <tr>
+                  <td><b>Animation</b><div style="color:var(--muted); font-size:12px">Animator</div></td>
+                  <td>
+                    <select id="tc_cur_anim">
+                      <option value="0">0.0</option>
+                      <option value="0.5" selected>0.5</option>
+                      <option value="1">1.0</option>
+                      <option value="1.5">1.5</option>
+                      <option value="2">2.0</option>
+                    </select>
+                  </td>
+                  <td>
+                    <select id="tc_add_anim">
+                      <option value="0" selected>+0.00</option>
+                      <option value="0.5">+0.50</option>
+                      <option value="1">+1.00</option>
+                      <option value="2">+2.00</option>
+                    </select>
+                  </td>
+                  <td><input id="tc_rate_anim" type="number" min="0" step="1" value="8317" style="width:140px;" /></td>
+                </tr>
+
+                <tr>
+                  <td><b>QA</b><div style="color:var(--muted); font-size:12px">Earlier QA</div></td>
+                  <td style="color:var(--muted); font-size:12px">—</td>
+                  <td>
+                    <select id="tc_add_qa">
+                      <option value="0" selected>+0.00</option>
+                      <option value="0.5">+0.50</option>
+                      <option value="1">+1.00</option>
+                      <option value="2">+2.00</option>
+                    </select>
+                  </td>
+                  <td><input id="tc_rate_qa" type="number" min="0" step="1" value="5000" style="width:140px;" /></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div style="height:12px"></div>
+
+            <div style="font-weight:800; margin-bottom:6px;">Compression assumptions (editable)</div>
+            <div style="color:var(--muted); font-size:12px; margin-bottom:10px">
+              Months saved per +1 FTE (or +0.5 where noted). Used for planning; replace with your actual capacity model if needed.
+            </div>
+
+            <table aria-label="Compression assumptions">
+              <thead>
+                <tr>
+                  <th>Lever</th>
+                  <th>Assumption</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>+1 Engineer savings (months)</td>
+                  <td><input id="tc_save_dev" type="number" min="0" max="12" step="0.1" value="4.5" style="width:140px;" /></td>
+                </tr>
+                <tr>
+                  <td>+1 Implementer savings (months)</td>
+                  <td><input id="tc_save_impl" type="number" min="0" max="12" step="0.1" value="3.0" style="width:140px;" /></td>
+                </tr>
+                <tr>
+                  <td>+1 2D Artist savings (months)</td>
+                  <td><input id="tc_save_art" type="number" min="0" max="12" step="0.1" value="2.0" style="width:140px;" /></td>
+                </tr>
+                <tr>
+                  <td>+0.5 Animator extra savings (months)</td>
+                  <td><input id="tc_save_anim_half" type="number" min="0" max="12" step="0.1" value="1.5" style="width:140px;" /></td>
+                </tr>
+                <tr>
+                  <td>+0.5 QA extra savings (months)</td>
+                  <td><input id="tc_save_qa_half" type="number" min="0" max="12" step="0.1" value="0.8" style="width:140px;" /></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="note" style="margin-top:10px">
+              CFO note: schedule compression has diminishing returns. If you hit the floor, the next lever is scope control.
+            </div>
+          </div>
+
+          <!-- Outputs -->
+          <div class="tc-panel">
+            <div style="font-weight:800; margin-bottom:8px;">Outputs</div>
+
+            <div class="kpis" style="grid-template-columns: 1fr; margin-top:0;">
+              <div class="kpi">
+                <div class="lbl">Estimated new timeline</div>
+                <div class="val" id="tc_new_months">—</div>
+                <div class="hint">Respects target + floor</div>
+              </div>
+              <div class="kpi">
+                <div class="lbl">Incremental burn</div>
+                <div class="val" id="tc_add_burn">—</div>
+                <div class="hint">Added hires only</div>
+              </div>
+              <div class="kpi">
+                <div class="lbl">Incremental total cash</div>
+                <div class="val" id="tc_add_total">—</div>
+                <div class="hint">ΔBurn × New timeline</div>
+              </div>
+            </div>
+
+            <div class="callout" style="margin-top:12px; border-color: rgba(107,228,255,.45); background: rgba(107,228,255,.06);">
+              <strong>Investor readability:</strong> Hiring is scoped as a variable line item that trades cash for time, and is capped by a feasibility floor.
+            </div>
+
+            <div class="note" id="tc_math_note"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+<script>
+  // ----------------------------
+  // Helpers
+  // ----------------------------
+  function money(n){
+    if(!isFinite(n)) return "—";
+    return "$" + Math.round(n).toLocaleString("en-US");
+  }
+
+  // ----------------------------
+  // Scenario data (Full Game only)
+  // Totals are taken directly from Corebound’s documented cost-to-ship envelopes.
+  // ----------------------------
+  const scenarios = [
+    {
+      id: "lean_200k",
+      name: "Lean execution (~$200k)",
+      budgetLow: 200000,
+      budgetHigh: 200000,
+      timeline: "≈ 20–24 months",
+      team: "Founder-led + selective contractors (1–3 core, part-time support)",
+      summary: `
+        <p><b>Lean execution</b> targets the documented minimum cost-to-ship envelope by keeping full-time headcount low and using contractors only where needed (art bursts, animation shots, audio packs, VO sessions).</p>
+        <p class="muted">CFO intent: keep downside capped while still producing a ship-ready PC build aligned to the 3-level scope.</p>
+      `,
+      lines: [
+        { cat: "Game Designer", low: 15000, high: 15000, note: "Design ownership, tuning, documentation" },
+        { cat: "Game Developer (Unity)", low: 85000, high: 85000, note: "Core systems, levels, bosses, UI" },
+        { cat: "2D Artist", low: 35000, high: 35000, note: "Characters/enemies, environments, UI art" },
+        { cat: "Animator", low: 20000, high: 20000, note: "Player/enemy animation + cutscene beats" },
+        { cat: "Audio / SFX", low: 15000, high: 15000, note: "SFX implementation + mix" },
+        { cat: "Voice Production (cutscenes)", low: 8000, high: 8000, note: "Casting + recording + edit" },
+        { cat: "QA / Playtesting", low: 7000, high: 7000, note: "External playtests + bug triage" },
+        { cat: "Tools & Software", low: 5000, high: 5000, note: "Unity add-ons, plugins, subscriptions" },
+        { cat: "Legal / Accounting", low: 5000, high: 5000, note: "Contracts, filings, bookkeeping" },
+        { cat: "Marketing (store + trailer + festivals)", low: 10000, high: 10000, note: "Earned-media-first" },
+        { cat: "Contingency", low: 0, high: 0, note: "Lean model leaves little buffer" }
+      ],
+      callout: "Lean budgets are viable only if scope discipline is strict and founder contribution is substantial. Any expansion in content, VO volume, or polish requires a re-budget.",
+      note: "All amounts are planning placeholders that roll up to the documented lean cost-to-ship envelope."
+    },
+    {
+      id: "typical_400_600",
+      name: "Typical indie scope ($400k–$600k)",
+      budgetLow: 400000,
+      budgetHigh: 600000,
+      timeline: "≈ 24–32 months",
+      team: "Small core team (3–5) + contractors (animation/audio/VO bursts)",
+      summary: `
+        <p><b>Typical indie scope</b> funds a sustainable production cadence: consistent content creation across 3 major levels, bosses, and narrative cutscenes with voiced dialogue and subtitles.</p>
+        <p class="muted">CFO intent: reduce schedule slip risk via steadier staffing and a real QA/polish runway.</p>
+      `,
+      lines: [
+        { cat: "Game Designer", low: 35000, high: 65000, note: "Systems, combat balance, narrative integration" },
+        { cat: "Game Developer (Unity)", low: 160000, high: 240000, note: "2–3 devs across production + polish" },
+        { cat: "2D Artist", low: 90000, high: 140000, note: "Character/enemy art, environments, UI/UX" },
+        { cat: "Animator", low: 45000, high: 80000, note: "Gameplay sets + cutscene animation" },
+        { cat: "Audio / SFX", low: 25000, high: 45000, note: "SFX + implementation + mix" },
+        { cat: "Voice Production (cutscenes)", low: 20000, high: 40000, note: "Casting, sessions, editing, direction" },
+        { cat: "Localization + Subtitles", low: 8000, high: 20000, note: "Subtitle pipeline + 1–3 languages" },
+        { cat: "QA / Playtesting", low: 20000, high: 40000, note: "External QA cycles + regression" },
+        { cat: "Tools & Software", low: 10000, high: 20000, note: "Unity add-ons, versioning, build tooling" },
+        { cat: "Legal / Accounting", low: 8000, high: 15000, note: "Contracts, IP, filings, bookkeeping" },
+        { cat: "Marketing (store + trailer + festivals)", low: 25000, high: 50000, note: "Trailer(s), key art, festival costs" },
+        { cat: "Contingency", low: 14000, high: 35000, note: "Schedule + vendor buffer" }
+      ],
+      callout: "This range is designed to survive iteration. If the game adds more levels, more bosses, or significantly more VO/cutscenes, adjust labor and audio accordingly.",
+      note: "Totals match the documented $400k–$600k typical cost-to-ship envelope."
+    },
+    {
+      id: "high_800_1000",
+      name: "High-polish execution ($800k–$1.0M)",
+      budgetLow: 800000,
+      budgetHigh: 1000000,
+      timeline: "≈ 30–38 months",
+      team: "Fuller staffing, stronger polish/QA runway, higher-fidelity art/animation/audio",
+      summary: `
+        <p><b>High-polish execution</b> funds higher asset density, more bespoke animation, stronger cinematic presentation, and a longer polish tail (QA + optimization).</p>
+        <p class="muted">CFO intent: raise production value while keeping the scope anchors (3 major levels) stable to protect schedule.</p>
+      `,
+      lines: [
+        { cat: "Game Designer", low: 80000, high: 120000, note: "Design + narrative coordination + tuning" },
+        { cat: "Game Developer (Unity)", low: 320000, high: 420000, note: "Multi-dev team + tools/perf work" },
+        { cat: "2D Artist", low: 170000, high: 240000, note: "Higher asset density + UI polish" },
+        { cat: "Animator", low: 90000, high: 140000, note: "More bespoke sets + cutscene fidelity" },
+        { cat: "Audio / SFX", low: 50000, high: 90000, note: "Bespoke SFX + mix + implementation" },
+        { cat: "Voice Production (cutscenes)", low: 60000, high: 100000, note: "More sessions, direction, post" },
+        { cat: "Localization + Subtitles", low: 20000, high: 50000, note: "More languages + QA pass" },
+        { cat: "QA / Playtesting", low: 50000, high: 90000, note: "Sustained external QA + regression" },
+        { cat: "Tools & Software", low: 20000, high: 40000, note: "Pipeline + build automation + plugins" },
+        { cat: "Legal / Accounting", low: 15000, high: 30000, note: "More vendor contracts + review cycles" },
+        { cat: "Marketing (store + trailer + festivals)", low: 60000, high: 120000, note: "Higher production marketing assets" },
+        { cat: "Contingency", low: 65000, high: 90000, note: "Risk buffer for polish tail" }
+      ],
+      callout: "High-polish is where burn rate can quietly explode. Treat scope anchors as hard constraints and track monthly burn against milestone gates.",
+      note: "Totals match the documented $800k–$1M high-polish cost-to-ship envelope."
+    }
+  ];
+
+  // ----------------------------
+  // UI references
+  // ----------------------------
+  const scenarioSelect = document.getElementById("scenario");
+  const summary = document.getElementById("summary");
+  const lines = document.getElementById("lines");
+  const callout = document.getElementById("callout");
+  const note = document.getElementById("note");
+  const kpiBudget = document.getElementById("kpiBudget");
+  const kpiTimeline = document.getElementById("kpiTimeline");
+  const kpiTeam = document.getElementById("kpiTeam");
+
+  // Forecasting refs
+  const f_price = document.getElementById("f_price");
+  const f_platform = document.getElementById("f_platform");
+  const f_mktpct = document.getElementById("f_mktpct");
+  const f_mktfixed = document.getElementById("f_mktfixed");
+  const f_m1 = document.getElementById("f_m1");
+  const f_decay = document.getElementById("f_decay");
+  const f_spread = document.getElementById("f_spread");
+  const f_summary = document.getElementById("f_summary");
+  const f_rows = document.getElementById("f_rows");
+  const f_csv = document.getElementById("f_csv");
+  const filterScenario = document.getElementById("filterScenario");
+  const filterMetric = document.getElementById("filterMetric");
+
+  let currentScenario = null;
+
+  // ----------------------------
+  // Render budget breakdown
+  // ----------------------------
+  function render(){
+    const id = scenarioSelect.value;
+    currentScenario = scenarios.find(x => x.id === id) || scenarios[0];
+
+    kpiBudget.textContent = money(currentScenario.budgetLow) + " – " + money(currentScenario.budgetHigh);
+    kpiTimeline.textContent = currentScenario.timeline;
+    kpiTeam.textContent = currentScenario.team;
+
+    summary.innerHTML = currentScenario.summary;
+
+    lines.innerHTML = "";
+    currentScenario.lines.forEach(row => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${row.cat}</td>
+        <td class="money">${money(row.low)}</td>
+        <td class="money">${money(row.high)}</td>
+        <td style="color:var(--muted); font-size:12px">${row.note || ""}</td>
+      `;
+      lines.appendChild(tr);
+    });
+
+    callout.textContent = currentScenario.callout;
+    note.textContent = currentScenario.note;
+
+    renderForecast();
+  }
+
+  // ----------------------------
+  // Forecasting
+  // ----------------------------
+  function mny(n){
+    if(!isFinite(n)) return "—";
+    return "$" + Math.round(n).toLocaleString("en-US");
+  }
+  function clamp(n,a,b){ return Math.min(b, Math.max(a,n)); }
+  function pct(v){ return clamp(Number(v)||0, 0, 100)/100; }
+
+  function buildForecastRows(mult){
+    const price = Math.max(0, Number(f_price.value) || 0);
+    const platform = pct(f_platform.value);
+    const mktpct = pct(f_mktpct.value);
+    const fixedMkt = Math.max(0, Number(f_mktfixed.value) || 0);
+
+    const m1Units = Math.max(0, Number(f_m1.value) || 0) * mult;
+    const decay = pct(f_decay.value);
+
+    const rows = [];
+    let units = m1Units;
+    let cumNet = 0;
+
+    for(let i=0;i<12;i++){
+      const monthLabel = `M${i+1}`;
+      const gross = units * price;
+      const marketing = (gross * mktpct) + (i===0 ? fixedMkt : 0);
+      const net = Math.max(0, (gross * (1 - platform)) - marketing);
+      cumNet += net;
+
+      rows.push({ month: monthLabel, units, gross, marketing, net, cumNet });
+
+      units = units * (1 - decay);
+    }
+    return rows;
+  }
+
+  function firstBreakEvenMonth(rows, target){
+    for(let i=0;i<rows.length;i++){
+      if(rows[i].cumNet >= target) return i+1;
+    }
+    return null;
+  }
+
+  function renderForecast(){
+    if(!currentScenario) return;
+
+    const s = currentScenario;
+    const spread = pct(f_spread.value);
+    const lowMult = 1 - spread;
+    const baseMult = 1;
+    const highMult = 1 + spread;
+
+    const lowRows = buildForecastRows(lowMult);
+    const baseRows = buildForecastRows(baseMult);
+    const highRows = buildForecastRows(highMult);
+
+    const total = (rows, key) => rows.reduce((a,r)=>a+(r[key]||0),0);
+
+    const lowGross = total(lowRows, "gross");
+    const lowMkt = total(lowRows, "marketing");
+    const lowNet = total(lowRows, "net");
+
+    const baseGross = total(baseRows, "gross");
+    const baseMkt = total(baseRows, "marketing");
+    const baseNet = total(baseRows, "net");
+
+    const highGross = total(highRows, "gross");
+    const highMkt = total(highRows, "marketing");
+    const highNet = total(highRows, "net");
+
+    const beLow = firstBreakEvenMonth(baseRows, s.budgetLow);
+    const beHigh = firstBreakEvenMonth(baseRows, s.budgetHigh);
+
+    const price = Math.max(0, Number(f_price.value) || 0);
+    const platform = pct(f_platform.value);
+    const mktpct = pct(f_mktpct.value);
+    const perUnitNetApprox = Math.max(0.01, (price * (1 - platform)) * (1 - mktpct));
+    const unitsLow = Math.ceil(s.budgetLow / perUnitNetApprox);
+    const unitsHigh = Math.ceil(s.budgetHigh / perUnitNetApprox);
+
+    f_summary.innerHTML = `
+      <div class="f-summary-grid">
+        <div class="scenario-block small">
+          <div class="lbl">Low (12mo)</div>
+          <div class="val">${mny(lowNet)}</div>
+          <div style="color:var(--muted); margin-top:6px;">Gross ${mny(lowGross)} • Mkt ${mny(lowMkt)}</div>
+        </div>
+        <div class="scenario-block">
+          <div class="lbl">Base (12mo)</div>
+          <div class="val">${mny(baseNet)}</div>
+          <div style="color:var(--muted); margin-top:6px;">Gross ${mny(baseGross)} • Mkt ${mny(baseMkt)}</div>
+          <div style="margin-top:8px; color:var(--muted); font-size:12px;"><strong>Break-even (vs selected budget):</strong> ${beLow ? `~Month ${beLow} (low)` : "Not reached (low)"} / ${beHigh ? `~Month ${beHigh} (high)` : "Not reached (high)"}</div>
+        </div>
+        <div class="scenario-block small">
+          <div class="lbl">High (12mo)</div>
+          <div class="val">${mny(highNet)}</div>
+          <div style="color:var(--muted); margin-top:6px;">Gross ${mny(highGross)} • Mkt ${mny(highMkt)}</div>
+        </div>
+      </div>
+      <div style="margin-top:8px; color:var(--muted); font-size:12px;"><strong>Units to recoup (approx):</strong> ${unitsLow.toLocaleString("en-US")} – ${unitsHigh.toLocaleString("en-US")} units <span style="color:var(--muted);">(per-unit net estimate; fixed marketing handled in monthly table)</span></div>
+    `;
+
+    const selScenario = (filterScenario && filterScenario.value) ? filterScenario.value : 'all';
+    const selMetric = (filterMetric && filterMetric.value) ? filterMetric.value : 'all';
+
+    const thead = document.querySelector('table[aria-label="Forecast table"] thead');
+    if(selMetric === 'all'){
+      thead.innerHTML = `
+        <tr>
+          <th>Month</th>
+          <th>Scenario</th>
+          <th>Units</th>
+          <th>Gross</th>
+          <th>Marketing</th>
+          <th>Net (after platform + marketing)</th>
+          <th>Cumulative Net</th>
+          <th>Break-even vs Selected Budget</th>
+        </tr>
+      `;
+    } else {
+      const metricLabel = selMetric === 'units' ? 'Units' : selMetric === 'gross' ? 'Gross' : 'Net';
+      thead.innerHTML = `
+        <tr>
+          <th>Month</th>
+          <th>Scenario</th>
+          <th>${metricLabel}</th>
+          <th>Cumulative Net</th>
+          <th>Break-even vs Selected Budget</th>
+        </tr>
+      `;
+    }
+
+    const rows = [
+      ...lowRows.map(r=>({ ...r, scenario:"Low" })),
+      ...baseRows.map(r=>({ ...r, scenario:"Base" })),
+      ...highRows.map(r=>({ ...r, scenario:"High" }))
+    ].filter(r => selScenario === 'all' ? true : r.scenario === selScenario);
+
+    f_rows.innerHTML = "";
+    rows.forEach(r=>{
+      const tr = document.createElement("tr");
+      const be = r.cumNet >= s.budgetHigh ? "High recouped" : (r.cumNet >= s.budgetLow ? "Low recouped" : "—");
+
+      if(selMetric === 'all'){
+        tr.innerHTML = `
+          <td>${r.month}</td>
+          <td>${r.scenario}</td>
+          <td class="num">${Math.round(r.units).toLocaleString("en-US")}</td>
+          <td class="money">${mny(r.gross)}</td>
+          <td class="money">${mny(r.marketing)}</td>
+          <td class="money">${mny(r.net)}</td>
+          <td class="money">${mny(r.cumNet)}</td>
+          <td style="color:var(--muted); font-size:12px">${be}</td>
+        `;
+      } else {
+        const metricVal = selMetric === 'units' ? Math.round(r.units).toLocaleString("en-US")
+          : selMetric === 'gross' ? mny(r.gross)
+          : mny(r.net);
+
+        tr.innerHTML = `
+          <td>${r.month}</td>
+          <td>${r.scenario}</td>
+          <td class="${selMetric === 'units' ? 'num' : 'money'}">${metricVal}</td>
+          <td class="money">${mny(r.cumNet)}</td>
+          <td style="color:var(--muted); font-size:12px">${be}</td>
+        `;
+      }
+      f_rows.appendChild(tr);
+    });
+  }
+
+  function downloadCSV(){
+    if(!currentScenario) return;
+    const spread = pct(f_spread.value);
+    const lowRows = buildForecastRows(1 - spread).map(r=>({ ...r, scenario:"Low" }));
+    const baseRows = buildForecastRows(1).map(r=>({ ...r, scenario:"Base" }));
+    const highRows = buildForecastRows(1 + spread).map(r=>({ ...r, scenario:"High" }));
+
+    const rows = [...lowRows, ...baseRows, ...highRows];
+    const header = ["Month","Scenario","Units","Gross","Marketing","Net","CumulativeNet"];
+    const csv = [header.join(",")].concat(rows.map(r=>[
+      r.month, r.scenario,
+      Math.round(r.units),
+      Math.round(r.gross),
+      Math.round(r.marketing),
+      Math.round(r.net),
+      Math.round(r.cumNet)
+    ].join(","))).join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `corebound_forecast_${currentScenario.id}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // Init
+  scenarios.forEach(s=>{
+    const opt = document.createElement("option");
+    opt.value = s.id;
+    opt.textContent = s.name;
+    scenarioSelect.appendChild(opt);
+  });
+  scenarioSelect.value = scenarios[1].id;
+
+  scenarioSelect.addEventListener("change", render);
+  [f_price, f_platform, f_mktpct, f_mktfixed, f_m1, f_decay, f_spread].forEach(el => el.addEventListener("input", renderForecast));
+  filterScenario.addEventListener("change", renderForecast);
+  filterMetric.addEventListener("change", renderForecast);
+  f_csv.addEventListener("click", downloadCSV);
+
+  
+
+  // ----------------------------
+  // Timeline Compression Planner (auditable math)
+  // ----------------------------
+  const tc = {
+    baselineMonths: document.getElementById("tc_baseline_months"),
+    targetMonths: document.getElementById("tc_target_months"),
+    hoursPerMonth: document.getElementById("tc_hours_per_month"),
+    preset: document.getElementById("tc_preset_12mo"),
+
+    addDev: document.getElementById("tc_add_dev"),
+    addImpl: document.getElementById("tc_add_impl"),
+    addArt: document.getElementById("tc_add_art"),
+    curAnim: document.getElementById("tc_cur_anim"),
+    addAnim: document.getElementById("tc_add_anim"),
+    addQA: document.getElementById("tc_add_qa"),
+
+    rateDev: document.getElementById("tc_rate_dev"),
+    rateImpl: document.getElementById("tc_rate_impl"),
+    rateArt: document.getElementById("tc_rate_art"),
+    rateAnim: document.getElementById("tc_rate_anim"),
+    rateQA: document.getElementById("tc_rate_qa"),
+
+    saveDev: document.getElementById("tc_save_dev"),
+    saveImpl: document.getElementById("tc_save_impl"),
+    saveArt: document.getElementById("tc_save_art"),
+    saveAnimHalf: document.getElementById("tc_save_anim_half"),
+    saveQAHalf: document.getElementById("tc_save_qa_half"),
+    floor: document.getElementById("tc_floor"),
+
+    outMonths: document.getElementById("tc_new_months"),
+    outBurn: document.getElementById("tc_add_burn"),
+    outTotal: document.getElementById("tc_add_total"),
+    mathNote: document.getElementById("tc_math_note"),
+  };
+
+  function tcNum(el){ return Number(el?.value ?? 0) || 0; }
+  function tcMoney(n){
+    if(!isFinite(n)) return "—";
+    return "$" + Math.round(n).toLocaleString("en-US");
+  }
+
+  function tcCompute(){
+    if(!tc.baselineMonths) return;
+
+    const baselineMonths = Math.max(6, tcNum(tc.baselineMonths));
+    const targetMonths = Math.max(6, tcNum(tc.targetMonths));
+    const floor = Math.max(6, tcNum(tc.floor));
+
+    const addDev = tcNum(tc.addDev);
+    const addImpl = tcNum(tc.addImpl);
+    const addArt = tcNum(tc.addArt);
+    const addAnim = tcNum(tc.addAnim);
+    const addQA = tcNum(tc.addQA);
+
+    // Rates (monthly)
+    const rateDev = Math.max(0, tcNum(tc.rateDev));
+    const rateImpl = Math.max(0, tcNum(tc.rateImpl));
+    const rateArt = Math.max(0, tcNum(tc.rateArt));
+    const rateAnim = Math.max(0, tcNum(tc.rateAnim));
+    const rateQA = Math.max(0, tcNum(tc.rateQA));
+
+    // Schedule savings assumptions
+    const saveDevPer1 = Math.max(0, tcNum(tc.saveDev));     // months per +1 dev
+    const saveImplPer1 = Math.max(0, tcNum(tc.saveImpl));   // months per +1 implementer
+    const saveArtPer1 = Math.max(0, tcNum(tc.saveArt));     // months per +1 artist
+    const saveAnimPerHalf = Math.max(0, tcNum(tc.saveAnimHalf)); // months per +0.5 animator
+    const saveQAPerHalf = Math.max(0, tcNum(tc.saveQAHalf)); // months per +0.5 QA earlier
+
+    // Diminishing returns (simple, CFO-safe)
+    // - First dev is full value, second dev is half value (if addDev > 1)
+    const devSavings = (Math.min(addDev, 1) * saveDevPer1) + (Math.max(0, addDev - 1) * (saveDevPer1 * 0.5));
+    const implSavings = (Math.min(addImpl, 1) * saveImplPer1) + (Math.max(0, addImpl - 1) * (saveImplPer1 * 0.5));
+    const artSavings = (Math.min(addArt, 1) * saveArtPer1) + (Math.max(0, addArt - 1) * (saveArtPer1 * 0.5));
+    const animSavings = (addAnim / 0.5) * saveAnimPerHalf;
+    const qaSavings = (addQA / 0.5) * saveQAPerHalf;
+
+    let monthsSaved = devSavings + implSavings + artSavings + animSavings + qaSavings;
+
+    // Cannot save more months than needed to reach target; also respect a floor.
+    const maxSavableToTarget = Math.max(0, baselineMonths - targetMonths);
+    monthsSaved = Math.min(monthsSaved, maxSavableToTarget);
+
+    const unclampedNew = baselineMonths - monthsSaved;
+    const newMonths = Math.max(floor, unclampedNew);
+
+    // If floor blocks further savings, adjust displayed "effective saved"
+    const effectiveSaved = baselineMonths - newMonths;
+
+    // Incremental monthly burn (added headcount only)
+    const addBurn =
+      (addDev * rateDev) +
+      (addImpl * rateImpl) +
+      (addArt * rateArt) +
+      (addAnim * rateAnim) +
+      (addQA * rateQA);
+
+    // Incremental total cash: assume added headcount is retained across the new timeline window.
+    const addTotal = addBurn * newMonths;
+
+    tc.outMonths.textContent = `${newMonths.toFixed(1)} mo`;
+    tc.outBurn.textContent = tcMoney(addBurn) + " / mo";
+    tc.outTotal.textContent = tcMoney(addTotal);
+
+    tc.mathNote.innerHTML = `
+      <span style="color:var(--muted); font-size:12px;">
+        <b style="color:var(--text)">Math:</b>
+        Baseline <span class="money">${baselineMonths.toFixed(1)} mo</span> − Effective saved <span class="money">${effectiveSaved.toFixed(1)} mo</span> = 
+        New <span class="money">${newMonths.toFixed(1)} mo</span> (floor: <span class="money">${floor.toFixed(0)} mo</span>).
+        Incremental total cash = incremental burn × new timeline.
+      </span>
+    `;
+  }
+
+  function tcPreset12mo(){
+    // Strike team preset (cost-effective compression):
+    // +1 engineer, +1 implementer, +1 artist, animator to 1.0 total (add 0.5 if currently 0.5), +0.5 QA earlier
+    if(!tc.addDev) return;
+    tc.addDev.value = "1";
+    tc.addImpl.value = "1";
+    tc.addArt.value = "1";
+    // ensure animator total is at least 1.0
+    const curAnim = tcNum(tc.curAnim);
+    tc.addAnim.value = (curAnim < 1.0) ? "0.5" : "0";
+    tc.addQA.value = "0.5";
+    tcCompute();
+  }
+
+  // Hook up listeners (only if section exists)
+  if (tc.baselineMonths){
+    [
+      tc.baselineMonths, tc.targetMonths, tc.hoursPerMonth,
+      tc.addDev, tc.addImpl, tc.addArt, tc.curAnim, tc.addAnim, tc.addQA,
+      tc.rateDev, tc.rateImpl, tc.rateArt, tc.rateAnim, tc.rateQA,
+      tc.saveDev, tc.saveImpl, tc.saveArt, tc.saveAnimHalf, tc.saveQAPerHalf, tc.floor
+    ].forEach(el => el && el.addEventListener("input", tcCompute));
+
+    tc.preset && tc.preset.addEventListener("click", tcPreset12mo);
+
+    // Compute once on load
+    tcCompute();
+  }
+
+render();
+</script>
+
+  </div>
+
+<script>
+  // --- 12-Month Plan KPI wiring (baseline + incremental) ---
+  (function(){
+    function parseMoneyText(t){
+      if(!t) return NaN;
+      // supports "$123,456" and "123,456"
+      const n = String(t).replace(/[^0-9.\-]/g,'');
+      return n ? Number(n) : NaN;
+    }
+
+    function setText(id, val){
+      const el = document.getElementById(id);
+      if(el) el.textContent = val;
+    }
+
+    // Try to read currently selected baseline range from KPI text (e.g., "$420,000 – $480,000")
+    function getBaselineMid(){
+      const el = document.getElementById('kpiBudget');
+      if(!el) return NaN;
+      const txt = el.textContent || '';
+      const parts = txt.split('–').map(s=>s.trim());
+      if(parts.length === 2){
+        const lo = parseMoneyText(parts[0]);
+        const hi = parseMoneyText(parts[1]);
+        if(isFinite(lo) && isFinite(hi)) return (lo + hi) / 2;
+      }
+      const single = parseMoneyText(txt);
+      return isFinite(single) ? single : NaN;
+    }
+
+    // Try to read incremental cash from planner output elements
+    function getIncrementalCash(){
+      // common ids we may have used in the planner section
+      const candidates = [
+        'outAddedCash', 'outIncCash', 'outIncrementalCash', 'outAddedBudget',
+        'kpiAddedCash', 'kpiIncCash', 'kpiDeltaCash',
+        'incCash', 'inc_total_cash', 'incrementalCash'
+      ];
+      for(const id of candidates){
+        const el = document.getElementById(id);
+        if(el){
+          const v = parseMoneyText(el.textContent);
+          if(isFinite(v)) return v;
+        }
+      }
+      // fallback: look for data attribute
+      const el2 = document.querySelector('[data-inc-cash]');
+      if(el2){
+        const v = Number(el2.getAttribute('data-inc-cash'));
+        if(isFinite(v)) return v;
+      }
+      return NaN;
+    }
+
+    function render12moKPI(){
+      const baseMid = getBaselineMid();
+      const inc = getIncrementalCash();
+
+      if(!isFinite(baseMid) || !isFinite(inc)) return;
+
+      const total = baseMid + inc;
+      // show rounded dollars
+      const fmt = (n)=>"$"+Math.round(n).toLocaleString('en-US');
+      setText('kpi12moTotal', fmt(total));
+      setText('kpi12moDelta', "+"+fmt(inc) + " vs baseline (mid)");
+    }
+
+    // Re-render whenever the scenario changes or planner inputs change.
+    document.addEventListener('change', function(e){
+      if(e.target && (e.target.id === 'scenario' || e.target.closest('#twelve-month-plan'))){
+        setTimeout(render12moKPI, 0);
+      }
+    }, true);
+
+    document.addEventListener('input', function(e){
+      if(e.target && e.target.closest && e.target.closest('#twelve-month-plan')){
+        setTimeout(render12moKPI, 0);
+      }
+    }, true);
+
+    // Also run after load
+    window.addEventListener('load', function(){
+      setTimeout(render12moKPI, 200);
+    });
+  })();
+</script>
+
+
+<script>
+/* PART_TIME_MODEL */
+(function(){
+  const PART_TIME_WEIGHT = 0.5; // 50% FTE for non-full-time roles
+
+  function applyPartTime(monthlyRate, roleIndex){
+    return roleIndex === 0 ? monthlyRate : monthlyRate * PART_TIME_WEIGHT;
+  }
+
+  window.__k8PartTime = {
+    weight: PART_TIME_WEIGHT,
+    fullTimeCount: 1,
+    totalRoles: 6,
+    apply: applyPartTime
+  };
+})();
+</script>
+
+
+<div class="card anchor" id="voice-production" style="margin-top:14px;">
+  <div class="hd">
+    <div style="font-weight:900;">Voice Production (Milestone-Based)</div>
+    <div style="color:var(--muted); font-size:12px; margin-top:6px;">
+      4 voice actors paid per milestone. Main character carries the majority of dialogue.
+    </div>
+  </div>
+  <div class="bd">
+    <table>
+      <thead>
+        <tr><th>Role</th><th>Estimated Hours</th><th>Hourly Rate ($)</th><th>Cost ($)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Main Character</td><td>220</td><td>60</td><td>$13,200</td></tr>
+        <tr><td>Secondary Character</td><td>140</td><td>60</td><td>$8,400</td></tr>
+        <tr><td>Main Boss</td><td>80</td><td>65</td><td>$5,200</td></tr>
+        <tr><td>Sidekick</td><td>60</td><td>55</td><td>$3,300</td></tr>
+      </tbody>
+    </table>
+    <div class="callout" style="margin-top:10px;">
+      Total estimated voice production: <strong>$30,100</strong>
+    </div>
+  </div>
+</div>
+
+
+<script>
+/* VOICE_ACTOR_MODEL */
+window.__k8VoiceCost = function(){
+  return 30100;
+};
+</script>
+
+</body>
+</html>

@@ -1,0 +1,816 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kato.8 Studios — Investor Options</title>
+  <style>
+    :root{
+      --bg:#07070b;
+      --panel:#0f0f18;
+      --panel2:#0c0c14;
+      --text:#f3f3ff;
+      --muted:#b9b9d6;
+      --line:rgba(255,255,255,.12);
+      --accent:#ff4fd8;
+      --accent2:#6be4ff;
+      --good:#8dffb3;
+      --warn:#ffd36b;
+      --bad:#ff7a7a;
+      --shadow: 0 18px 40px rgba(0,0,0,.45);
+      --radius:18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: radial-gradient(900px 500px at 20% -10%, rgba(255,79,216,.20), transparent 65%),
+                  radial-gradient(900px 500px at 85% 0%, rgba(107,228,255,.16), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.35;
+    }
+    .wrap{ max-width:1100px; margin:0 auto; padding:44px 18px 70px; }
+
+    .sitehdr{
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      margin-bottom:18px;
+      padding:12px 14px;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: 16px;
+      background: rgba(0,0,0,.18);
+    }
+    .brand{ display:flex; flex-direction:column; gap:2px; }
+    .brand .name{
+      font-weight:900; letter-spacing:.2px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .spark{
+      width:10px; height:10px; border-radius:999px;
+      background: var(--accent);
+      box-shadow:0 0 18px rgba(255,79,216,.45);
+      display:inline-block;
+    }
+    .brand .tag{ font-size:12px; color:var(--muted); }
+    .nav{ display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-end; align-items:center; }
+    .nav a{
+      color:var(--muted);
+      font-size:13px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid transparent;
+      text-decoration:none;
+    }
+    .nav a:hover{
+      color:var(--text);
+      border-color: rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+    }
+
+    h1{
+      margin:0;
+      font-size: clamp(26px, 3vw, 40px);
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin:8px 0 0;
+      color:var(--muted);
+      max-width:920px;
+      font-size: 15px;
+    }
+
+    .badge-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; align-items:center; }
+    .badge{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--muted);
+      display:inline-flex; align-items:center; gap:8px;
+      white-space:nowrap;
+    }
+    .dot{ width:8px; height:8px; border-radius:999px; background:var(--accent); box-shadow:0 0 14px rgba(255,79,216,.45); }
+    .dot2{ background:var(--accent2); box-shadow:0 0 14px rgba(107,228,255,.35); }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:14px;
+      margin-top:18px;
+    }
+    @media (max-width: 920px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:16px 16px 12px;
+      border-bottom:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,79,216,.10), rgba(255,255,255,0));
+    }
+    .card .bd{ padding:16px; }
+
+    .controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .pillset{
+      display:flex;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.25);
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .pill{
+      padding:10px 12px;
+      font-size:13px;
+      cursor:pointer;
+      color:var(--muted);
+      background:transparent;
+      border:0;
+      white-space:nowrap;
+    }
+    .pill[aria-selected="true"]{
+      color:var(--text);
+      background: linear-gradient(180deg, rgba(255,79,216,.20), rgba(255,255,255,.02));
+    }
+
+    .kpis{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+      margin-top:14px;
+    }
+    @media (max-width: 560px){
+      .kpis{ grid-template-columns: 1fr; }
+    }
+    .kpi{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      background: rgba(0,0,0,.22);
+    }
+    .kpi .lbl{ font-size:12px; color:var(--muted); }
+    .kpi .val{ margin-top:6px; font-size:18px; font-weight:850; letter-spacing:.2px; }
+    .kpi .hint{ margin-top:6px; font-size:12px; color:var(--muted); }
+
+    .money{
+      font-variant-numeric: tabular-nums;
+      white-space:nowrap;
+      font-weight:750;
+      font-family: var(--mono);
+    }
+
+    .callout{
+      border:1px dashed rgba(255,79,216,.45);
+      background: rgba(255,79,216,.07);
+      padding:12px;
+      border-radius:16px;
+      color:var(--muted);
+      font-size:12px;
+      margin-top:12px;
+    }
+    .callout strong{ color:var(--text); }
+
+    .list{ margin:0; padding-left:18px; color:var(--muted); font-size:13px; }
+    .list li{ margin:8px 0; }
+
+    .note{ margin-top:12px; color:var(--muted); font-size:12px; }
+
+    .btn{
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.16);
+      background: linear-gradient(180deg, rgba(255,79,216,.22), rgba(255,255,255,.03));
+      color:var(--text);
+      padding:10px 12px;
+      font-weight:900;
+      letter-spacing:.2px;
+      cursor:pointer;
+      font-size:13px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .btn:hover{ border-color: rgba(255,255,255,.28); }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:12px;
+      font-size:13px;
+    }
+    th, td{
+      text-align:left;
+      padding:10px 8px;
+      border-bottom:1px solid var(--line);
+      vertical-align:top;
+    }
+    th{ color:var(--muted); font-weight:650; font-size:12px; letter-spacing:.2px; }
+    tr:last-child td{ border-bottom:0; }
+
+    /* Option 3 game selection */
+    .gamepick{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
+    .pickrow{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:16px;
+      background: rgba(0,0,0,.22);
+      padding:12px;
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      justify-content:space-between;
+    }
+    .pickrow .left{
+      display:flex; gap:10px; align-items:flex-start;
+      min-width:0;
+    }
+    .chk{
+      width:18px; height:18px;
+      margin-top:2px;
+      accent-color: var(--accent);
+    }
+    .picktitle{ font-weight:900; letter-spacing:.2px; }
+    .pickmeta{ color:var(--muted); font-size:12px; margin-top:4px; }
+    .pickright{
+      text-align:right;
+      min-width: 160px;
+    }
+
+    /* Milestones accordion */
+    details{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:16px;
+      background: rgba(0,0,0,.22);
+      padding:10px 12px;
+      margin-top:10px;
+    }
+    summary{
+      cursor:pointer;
+      font-weight:900;
+      letter-spacing:.2px;
+      list-style:none;
+    }
+    summary::-webkit-details-marker{ display:none; }
+    .milestone-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
+    .ms{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:14px;
+      padding:10px 12px;
+      background: rgba(255,255,255,.02);
+    }
+    .ms .t{ font-weight:900; }
+    .ms .d{ margin-top:6px; color:var(--muted); font-size:12px; }
+
+    .audit-badge{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:8px 10px; border-radius:999px;
+      border:1px solid rgba(107,228,255,.35);
+      background: rgba(107,228,255,.08);
+      color:var(--muted); font-size:12px;
+      margin-top:10px;
+    }
+    .audit-badge b{ color:var(--text); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="sitehdr">
+      <div class="brand">
+        <div class="name"><span class="spark"></span> <a href="index.html" style="color:var(--text); text-decoration:none;">Kato.8 Studios LLC</a></div>
+        <div class="tag">Retro × Modern — in gameplay and aesthetics</div>
+      </div>
+      <div class="nav">
+        <a href="games.html">Games</a>
+        <a href="updates.html">Updates</a>
+        <a href="about.html">About</a>
+        <a href="investor-options.html">Investor Options</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+
+    <div>
+      <h1>Investor Options</h1>
+      <p class="sub">
+        Three clear investment paths: portfolio revenue, studio + portfolio (equity), or title-specific participation.
+        Totals and “use of funds” pull directly from each title’s audited line-item budget model. Totals are shown using default staffing assumptions; each title page allows rate/headcount toggles and re-reconciles line items in real time.
+      </p>
+
+      <div class="badge-row">
+        <div class="badge"><span class="dot"></span> Milestone-gated spend</div>
+        <div class="badge"><span class="dot dot2"></span> Founder cash salary: $0 (comp via upside)</div>
+      </div>
+
+      <div class="badge-row" style="margin-top:14px;">
+        <a class="btn" href="investor-options.html" style="border-color: rgba(0,230,255,.35); background: linear-gradient(180deg, rgba(0,230,255,.18), rgba(0,230,255,.08)); color:var(--text); font-weight:900; box-shadow: 0 0 20px rgba(0,230,255,.15); text-decoration:none;">💼 Investor Options</a>
+      </div>
+
+      <div class="badge-row" style="margin-top:10px;">
+        <a class="btn" href="financials-corebound.html" style="border-color: rgba(255,255,255,.16); background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); text-decoration:none;">Corebound Financials</a>
+        <a class="btn" href="financials-lastlight.html" style="border-color: rgba(255,255,255,.16); background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); text-decoration:none;">Last Light Financials</a>
+        <a class="btn" href="financials-bigbosscleanup.html" style="border-color: rgba(255,255,255,.16); background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); text-decoration:none;">Big Boss Cleanup Financials</a>
+      </div>
+
+      <div class="audit-badge">
+        <span style="width:8px;height:8px;border-radius:999px;background:var(--good);box-shadow:0 0 12px rgba(141,255,179,.35);display:inline-block;"></span>
+        <b>Audit posture:</b> investment totals and use-of-funds use the same audited scenario ranges shown on each financial page.
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- LEFT: INTERACTIVE OPTIONS -->
+      <div class="card">
+        <div class="hd">
+          <div class="controls">
+            <div class="pillset" role="tablist" aria-label="Investor options">
+              <button class="pill" id="opt1" role="tab" aria-selected="true">Option 1 — Fund All Games</button>
+              <button class="pill" id="opt2" role="tab" aria-selected="false">Option 2 — Fund All + Studio</button>
+              <button class="pill" id="opt3" role="tab" aria-selected="false">Option 3 — Fund 1–2 Titles</button>
+            </div>
+          </div>
+
+          <div class="kpis">
+            <div class="kpi">
+              <div class="lbl">Cash Required (Range)</div>
+              <div class="val" id="kpiCash">—</div>
+              <div class="hint">Auto-calculated from selected scope</div>
+            </div>
+            <div class="kpi">
+              <div class="lbl">Investor Upside</div>
+              <div class="val" id="kpiUpside">—</div>
+              <div class="hint">Revenue share + (optional) equity</div>
+            </div>
+            <div class="kpi">
+              <div class="lbl">Scope</div>
+              <div class="val" id="kpiScope">—</div>
+              <div class="hint">Portfolio vs title-specific</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bd">
+          <div id="optionSummary"></div>
+
+          <!-- Option 3 selection -->
+          <div id="onlyTitles" style="display:none;">
+            <div style="font-weight:900; letter-spacing:.2px; margin-top:6px;">Select title(s)</div>
+            <div class="note">Option 3 is designed for investing in <b>1–2 titles</b>. (You can select more for planning, but the UI flags it.)</div>
+
+            <div class="gamepick" id="gamePick"></div>
+
+            <div class="callout" id="pickWarning" style="display:none;">
+              <strong>Heads up:</strong> you’ve selected more than 2 titles. Option 3 is intended for 1–2 title investments.
+              If you want the full slate, switch to Option 1 or 2.
+            </div>
+          </div>
+
+          <div class="callout" id="termsBox" style="margin-top:14px;">
+            <strong>Revenue share:</strong> 15% of revenue from each funded title under the selected option.
+            <span style="display:block; margin-top:6px;">
+              <strong>Equity (Option 2 only):</strong> $20,000 for 20% company equity (in addition to funding the slate).
+            </span>
+          </div>
+
+          <div class="note" style="margin-top:12px;">
+            This page is an investor summary. Detailed line items are in each title’s financial page links above.
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: DILIGENCE / GOVERNANCE -->
+      <div class="card">
+        <div class="hd">
+          <div style="font-weight:900; letter-spacing:.2px;">Diligence View (How Risk Is Managed)</div>
+          <div style="color:var(--muted); font-size:12px; margin-top:6px">
+            What capital buys, what gates spend, and how delivery is verified.
+          </div>
+        </div>
+
+        <div class="bd">
+          <ul class="list">
+            <li><b>Milestone-gated spend:</b> capital releases align to proof of progress, not calendar time.</li>
+            <li><b>Scope discipline:</b> budgets are built from explicit line items; scope adds trigger re-budget or timeline changes.</li>
+            <li><b>PC-first:</b> console ports are optional, separately budgeted.</li>
+            <li><b>Founder cash pay = $0:</b> founder participates via upside; cash planning reflects capital needed to ship.</li>
+          </ul>
+
+          <div class="callout">
+            <strong>Reporting expectation:</strong> monthly build + burn update, milestone acceptance checklist, and title-level revenue reporting post-launch.
+          </div>
+
+          <div class="note">
+            Suggested next document set: “Use of Funds & Milestones” acceptance criteria + a title-by-title revenue share agreement addendum.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- USE OF FUNDS + MILESTONES (DETAIL) -->
+    <div class="card" style="margin-top:14px;">
+      <div class="hd">
+        <div style="font-weight:900; letter-spacing:.2px;">Detailed Use of Funds & Milestones</div>
+        <div style="color:var(--muted); font-size:12px; margin-top:6px">
+          Uses the same audited categories shown on each title’s financial page, and maps them to milestone deliverables.
+        </div>
+      </div>
+      <div class="bd" id="uofRoot"></div>
+    </div>
+
+    <div class="note" style="margin-top:14px;">
+      © Kato.8 Studios LLC — investor options summary. Replace planning estimates with signed vendor quotes as scope locks.
+    </div>
+
+  </div>
+
+  <script>
+    // ----------------------------
+    // Data (pulled from your existing “recommended / baseline” scenarios)
+    // ----------------------------
+    const games = [
+      {
+        id: "corebound",
+        title: "Corebound",
+        link: "financials-corebound.html",
+        scenarioLabel: "Typical indie scope ($400k–$600k) $400k–$600k",
+        cashLow: 400000,
+        cashHigh: 600000,
+        timeline: "≈ 24–32 months",
+        useOfFunds: [
+          "Game Designer",
+          "Game Developer (Unity)",
+          "2D Artist",
+          "Animator",
+          "Audio / SFX (milestone-based)",
+          "Voice Production (cutscenes)",
+          "QA / Playtesting",
+          "Tools & Software",
+          "Legal / Accounting",
+          "Marketing (store + trailer + festivals)",
+          "Contingency"
+        ],
+        milestones: [
+          { t: "Milestone 1 — Prototype & Systems Spine", d: "Core movement + combat loop prototype, initial tooling pipeline, first-pass enemy/boss behavior proof, and production plan lock (scope + risks)." },
+          { t: "Milestone 2 — Vertical Slice", d: "One representative segment with shippable-quality feel: combat tuning, UI pass, art direction locked, and first cutscene/VO pipeline proven at small scale." },
+          { t: "Milestone 3 — Content Production (Levels + Bosses)", d: "Build out the 3-level scope with bosses, upgrades/progression hooks, and narrative beats; integrate animation/audio/VO in planned bursts." },
+          { t: "Milestone 4 — Alpha", d: "Start-to-finish playable with placeholder polish, content complete in structure, stabilization and balance focus begins." },
+          { t: "Milestone 5 — Beta", d: "Content lock, major bugs resolved, performance pass, external QA/playtests expanded, launch assets nearing final." },
+          { t: "Milestone 6 — Launch", d: "Steam-ready release candidate, final QA sweep, store/trailer/festival beats executed per plan." }
+        ]
+      },
+      {
+        id: "lastlight",
+        title: "Last Light",
+        link: "financials-lastlight.html",
+        scenarioLabel: "Full Game — Founder-Led, Mixed Geography (Baseline) $420k–$480k",
+        cashLow: 420000,
+        cashHigh: 480000,
+        timeline: "12–14 months",
+        useOfFunds: [
+          "Labor (cash compensation, staffing model)",
+          "Tools / Infrastructure",
+          "Marketing / Launch",
+          "Overhead + Contingency"
+        ],
+        milestones: [
+          { t: "Milestone 1 — Prototype & Core Loop Validation", d: "Combat feel + resource/base-defense loop proved; early UX/onboarding pass; technical foundation stabilized." },
+          { t: "Milestone 2 — Demo / Vertical Slice", d: "Playable slice suitable for community tests and creator outreach; Steam-facing assets prepared (capsule, screenshots, trailer-lite where applicable)." },
+          { t: "Milestone 3 — Alpha (Feature Complete)", d: "All major systems in place; progression + enemies/turrets breadth established; stability becomes primary focus." },
+          { t: "Milestone 4 — Beta (Content + Balance Lock)", d: "Balance tuned, performance pass, QA ramp; marketing launch package finalized (key art/trailer/outreach)." },
+          { t: "Milestone 5 — Launch", d: "Release candidate, final QA, store readiness, and launch operations executed." }
+        ]
+      },
+      {
+        id: "bigbosscleanup",
+        title: "Big Boss Cleanup",
+        link: "financials-bigbosscleanup.html",
+        scenarioLabel: "Baseline — 12–15 months (Recommended) $320k–$450k",
+        cashLow: 320000,
+        cashHigh: 450000,
+        timeline: "12–15 months",
+        useOfFunds: [
+          "Labor (cash, staffing model)",
+          "Software & Tools",
+          "Marketing (launch package)",
+          "Legal & Accounting",
+          "Contingency"
+        ],
+        milestones: [
+          { t: "Milestone 1 — Prototype (Feel + Readability)", d: "Core cleaning interactions validated (clean vs dirty readability), object/repair interactions, basic progression scaffolding." },
+          { t: "Milestone 2 — Production Slice", d: "One shippable-quality arena slice proving environment pipeline, interaction stability, and performance envelope." },
+          { t: "Milestone 3 — Content Production (Arenas)", d: "Build 5–7 modular arenas leveraging reusable systems; polish passes scheduled, not “end-loaded.”" },
+          { t: "Milestone 4 — Alpha", d: "Start-to-finish playable; feature complete; stability focus begins; early external playtests." },
+          { t: "Milestone 5 — Beta", d: "Content lock, QA ramp, performance pass, final marketing package (Steam assets, trailer, outreach/festivals)." },
+          { t: "Milestone 6 — Launch", d: "Release candidate, final QA, store readiness, and launch execution." }
+        ]
+      }
+    ];
+
+    // ----------------------------
+    // Helpers
+    // ----------------------------
+    const money = (n) => {
+      if (n === null || n === undefined || !isFinite(n)) return "—";
+      return "$" + Math.round(n).toLocaleString("en-US");
+    };
+
+    const sumRange = (ids) => {
+      const chosen = games.filter(g => ids.includes(g.id));
+      const low = chosen.reduce((a,g)=>a+g.cashLow,0);
+      const high = chosen.reduce((a,g)=>a+g.cashHigh,0);
+      return { low, high };
+    };
+
+    // ----------------------------
+    // UI Elements
+    // ----------------------------
+    const opt1 = document.getElementById("opt1");
+    const opt2 = document.getElementById("opt2");
+    const opt3 = document.getElementById("opt3");
+
+    const kpiCash = document.getElementById("kpiCash");
+    const kpiUpside = document.getElementById("kpiUpside");
+    const kpiScope = document.getElementById("kpiScope");
+
+    const optionSummary = document.getElementById("optionSummary");
+    const onlyTitles = document.getElementById("onlyTitles");
+    const gamePick = document.getElementById("gamePick");
+    const pickWarning = document.getElementById("pickWarning");
+
+    const uofRoot = document.getElementById("uofRoot");
+
+    let mode = "opt1";
+    let selected = new Set(["corebound", "lastlight"]); // default 2 selections for option 3
+
+    function setMode(next){
+      mode = next;
+      opt1.setAttribute("aria-selected", mode==="opt1");
+      opt2.setAttribute("aria-selected", mode==="opt2");
+      opt3.setAttribute("aria-selected", mode==="opt3");
+
+      onlyTitles.style.display = (mode==="opt3") ? "block" : "none";
+      render();
+    }
+
+    function render(){
+      // Determine selection scope
+      let ids;
+      if(mode==="opt3"){
+        ids = Array.from(selected);
+      }else{
+        ids = games.map(g=>g.id);
+      }
+
+      // Compute cash range
+      const { low, high } = sumRange(ids);
+
+      // Option 2 adds $20k equity check on top of fully funding the slate
+      const equityAdd = (mode==="opt2") ? 200000 : 0;
+      const cashLow = low + equityAdd;
+      const cashHigh = high + equityAdd;
+
+      kpiCash.textContent = `${money(cashLow)} – ${money(cashHigh)}`;
+
+      if(mode==="opt1"){
+        kpiUpside.textContent = "15% / title";
+        kpiScope.textContent = "All titles";
+        optionSummary.innerHTML = `
+          <div class="callout" style="margin-top:0;">
+            <strong>Option 1:</strong> Fully fund the slate and receive <strong>15% revenue share from each title</strong>.
+            <span style="display:block; margin-top:6px;">
+              Best for investors who want <b>portfolio diversification</b> without company equity.
+            </span>
+          </div>
+          <table aria-label="Option 1 summary table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Scenario</th>
+                <th>Cash Range</th>
+                <th>Timeline</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${games.map(g=>`
+                <tr>
+                  <td><a href="${g.link}" style="color:var(--text); text-decoration:none; font-weight:900;">${g.title}</a></td>
+                  <td style="color:var(--muted); font-size:12px">${g.scenarioLabel}</td>
+                  <td class="money">${money(g.cashLow)} – ${money(g.cashHigh)}</td>
+                  <td style="color:var(--muted); font-size:12px">${g.timeline}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        `;
+      }
+
+      if(mode==="opt2"){
+        kpiUpside.textContent = "15% / title + 20% equity";
+        kpiScope.textContent = "All titles + studio";
+        optionSummary.innerHTML = `
+          <div class="callout" style="margin-top:0;">
+            <strong>Option 2:</strong> Fully fund the slate <b>plus</b> <strong>$200,000 for 20% equity</strong> in Kato.8 Studios LLC.
+            <span style="display:block; margin-top:6px;">
+              Best for partners who want <b>title revenue participation</b> and <b>long-term studio upside</b>.
+            </span>
+          </div>
+          <table aria-label="Option 2 summary table">
+            <thead>
+              <tr>
+                <th>Component</th>
+                <th>Amount</th>
+                <th>What you receive</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>Slate funding (all titles)</b></td>
+                <td class="money">${money(low)} – ${money(high)}</td>
+                <td style="color:var(--muted); font-size:12px">15% revenue share per funded title</td>
+              </tr>
+              <tr>
+                <td><b>Studio equity</b></td>
+                <td class="money">${money(200000)}</td>
+                <td style="color:var(--muted); font-size:12px">20% ownership stake (minority)</td>
+              </tr>
+              <tr>
+                <td><b>Total</b></td>
+                <td class="money">${money(cashLow)} – ${money(cashHigh)}</td>
+                <td style="color:var(--muted); font-size:12px">Revenue share + equity</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="note">
+            Governance is typically defined in a lightweight operating agreement addendum (information rights, reporting cadence, and major decision thresholds).
+          </div>
+        `;
+      }
+
+      if(mode==="opt3"){
+        const picked = games.filter(g=>ids.includes(g.id));
+        kpiUpside.textContent = "15% / selected title";
+        kpiScope.textContent = `${picked.length} title(s)`;
+        optionSummary.innerHTML = `
+          <div class="callout" style="margin-top:0;">
+            <strong>Option 3:</strong> Invest in <strong>1–2 specific titles</strong> and receive <strong>15% revenue share</strong> from those titles only.
+            <span style="display:block; margin-top:6px;">
+              Best for focused conviction bets with clean title-level reporting.
+            </span>
+          </div>
+
+          <table aria-label="Option 3 summary table">
+            <thead>
+              <tr>
+                <th>Selected title</th>
+                <th>Scenario</th>
+                <th>Cash Range</th>
+                <th>Timeline</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${picked.length ? picked.map(g=>`
+                <tr>
+                  <td><a href="${g.link}" style="color:var(--text); text-decoration:none; font-weight:900;">${g.title}</a></td>
+                  <td style="color:var(--muted); font-size:12px">${g.scenarioLabel}</td>
+                  <td class="money">${money(g.cashLow)} – ${money(g.cashHigh)}</td>
+                  <td style="color:var(--muted); font-size:12px">${g.timeline}</td>
+                </tr>
+              `).join("") : `
+                <tr><td colspan="4" style="color:var(--muted); font-size:12px;">Select a title below to compute totals.</td></tr>
+              `}
+            </tbody>
+          </table>
+        `;
+
+        // warning if more than 2 selected
+        pickWarning.style.display = (picked.length > 2) ? "block" : "none";
+      }
+
+      // Render game picker rows always (only visible for opt3)
+      gamePick.innerHTML = games.map(g=>{
+        const checked = selected.has(g.id) ? "checked" : "";
+        return `
+          <div class="pickrow">
+            <div class="left">
+              <input class="chk" type="checkbox" id="chk_${g.id}" ${checked} />
+              <div style="min-width:0;">
+                <div class="picktitle">${g.title}</div>
+                <div class="pickmeta">
+                  <a href="${g.link}" style="color:var(--muted); text-decoration:none;">${g.scenarioLabel}</a>
+                  <span style="opacity:.75"> • </span>
+                  <span>${g.timeline}</span>
+                </div>
+              </div>
+            </div>
+            <div class="pickright">
+              <div class="money">${money(g.cashLow)} – ${money(g.cashHigh)}</div>
+              <div class="pickmeta">Audited range</div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      games.forEach(g=>{
+        const el = document.getElementById(`chk_${g.id}`);
+        if(!el) return;
+        el.onchange = (e)=>{
+          if(e.target.checked) selected.add(g.id);
+          else selected.delete(g.id);
+          render();
+        };
+      });
+
+      // Render detailed “Use of Funds & Milestones” based on current option scope
+      renderUseOfFunds(ids);
+    }
+
+    function renderUseOfFunds(ids){
+      const chosen = games.filter(g=>ids.includes(g.id));
+
+      uofRoot.innerHTML = chosen.map(g=>{
+        return `
+          <div class="card" style="margin-top:12px;">
+            <div class="hd">
+              <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+                <div>
+                  <div style="font-weight:900; letter-spacing:.2px; font-size:16px;">${g.title}</div>
+                  <div style="color:var(--muted); font-size:12px; margin-top:4px;">
+                    Scenario used: <b style="color:var(--text)">${g.scenarioLabel}</b> • Timeline: <b style="color:var(--text)">${g.timeline}</b>
+                  </div>
+                </div>
+                <div class="money">${money(g.cashLow)} – ${money(g.cashHigh)}</div>
+              </div>
+            </div>
+            <div class="bd">
+              <div style="font-weight:900; letter-spacing:.2px;">Use of Funds (audited categories)</div>
+              <ul class="list" style="margin-top:10px;">
+                ${g.useOfFunds.map(x=>`<li>${x}</li>`).join("")}
+              </ul>
+
+              <details open>
+                <summary>Milestones (deliverables + gating)</summary>
+                <div class="milestone-grid">
+                  ${g.milestones.map(m=>`
+                    <div class="ms">
+                      <div class="t">${m.t}</div>
+                      <div class="d">${m.d}</div>
+                    </div>
+                  `).join("")}
+                </div>
+
+                <div class="callout" style="margin-top:12px;">
+                  <strong>Gate rule:</strong> milestone spend increases only after acceptance criteria are met (playable build + checklist),
+                  maintaining capital efficiency and reducing schedule-slip risk.
+                </div>
+              </details>
+
+              <div class="note">
+                For the full line-item reconciliation and scenario variants, see:
+                <a href="${g.link}" style="color:var(--text); text-decoration:none; font-weight:900;">${g.title} Financials</a>.
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      if(!chosen.length){
+        uofRoot.innerHTML = `<div class="note">Select at least one title to show detailed use of funds and milestones.</div>`;
+      }
+    }
+
+    // ----------------------------
+    // Events
+    // ----------------------------
+    opt1.addEventListener("click", ()=>setMode("opt1"));
+    opt2.addEventListener("click", ()=>setMode("opt2"));
+    opt3.addEventListener("click", ()=>setMode("opt3"));
+
+    // Init
+    setMode("opt1");
+  </script>
+</body>
+</html>

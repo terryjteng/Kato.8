@@ -1,0 +1,833 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kato.8 Studios — Big Boss Cleanup Financials</title>
+  <style>
+    :root{
+      --bg:#07070b;
+      --text:#f3f3ff;
+      --muted:#b9b9d6;
+      --line:rgba(255,255,255,.12);
+      --accent:#ff4fd8;
+      --accent2:#6be4ff;
+      --good:#8dffb3;
+      --warn:#ffd36b;
+      --bad:#ff7a7a;
+      --shadow: 0 18px 40px rgba(0,0,0,.45);
+      --radius:18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: radial-gradient(900px 500px at 20% -10%, rgba(255,79,216,.20), transparent 65%),
+                  radial-gradient(900px 500px at 85% 0%, rgba(107,228,255,.16), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.35;
+    }
+    .wrap{ max-width:1100px; margin:0 auto; padding:44px 18px 70px; }
+
+    .sitehdr{
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      margin-bottom:18px;
+      padding:12px 14px;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: 16px;
+      background: rgba(0,0,0,.18);
+    }
+    .brand{ display:flex; flex-direction:column; gap:2px; }
+    .brand .name{
+      font-weight:900; letter-spacing:.2px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .spark{
+      width:10px; height:10px; border-radius:999px;
+      background: var(--accent);
+      box-shadow:0 0 18px rgba(255,79,216,.45);
+      display:inline-block;
+    }
+    .brand .tag{ font-size:12px; color:var(--muted); }
+    .nav{ display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-end; align-items:center; }
+    .nav a{
+      color:var(--muted);
+      font-size:13px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid transparent;
+      text-decoration:none;
+    }
+    .nav a:hover{
+      color:var(--text);
+      border-color: rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+    }
+
+    h1{
+      margin:0;
+      font-size: clamp(26px, 3vw, 40px);
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin:8px 0 0;
+      color:var(--muted);
+      max-width:900px;
+      font-size: 15px;
+    }
+
+    .badge-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; align-items:center; }
+    .badge{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--muted);
+      display:inline-flex; align-items:center; gap:8px;
+      white-space:nowrap;
+    }
+    .dot{ width:8px; height:8px; border-radius:999px; background:var(--accent); box-shadow:0 0 14px rgba(255,79,216,.45); }
+    .dot2{ background:var(--accent2); box-shadow:0 0 14px rgba(107,228,255,.35); }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:16px 16px 12px;
+      border-bottom:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,79,216,.10), rgba(255,255,255,0));
+    }
+    .card .bd{ padding:16px; }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:14px;
+      margin-top:18px;
+    }
+    @media (max-width: 920px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .controls{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+    .pillset{
+      display:flex;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.25);
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .pill{
+      padding:10px 12px;
+      font-size:13px;
+      cursor:pointer;
+      color:var(--muted);
+      background:transparent;
+      border:0;
+    }
+    .pill[aria-selected="true"]{
+      color:var(--text);
+      background: linear-gradient(180deg, rgba(255,79,216,.20), rgba(255,255,255,.02));
+    }
+    select{
+      appearance:none;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.25);
+      color:var(--text);
+      padding:10px 12px;
+      font-size:13px;
+      outline:none;
+    }
+
+    .kpis{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+      margin-top:14px;
+    }
+    @media (max-width: 560px){ .kpis{ grid-template-columns: 1fr; } }
+    .kpi{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      background: rgba(0,0,0,.22);
+    }
+    .kpi .lbl{ font-size:12px; color:var(--muted); }
+    .kpi .val{ margin-top:6px; font-size:18px; font-weight:800; letter-spacing:.2px; }
+    .kpi .hint{ margin-top:6px; font-size:12px; color:var(--muted); }
+
+    table{ width:100%; border-collapse:collapse; margin-top:12px; font-size:13px; }
+    th, td{
+      text-align:left;
+      padding:10px 8px;
+      border-bottom:1px solid var(--line);
+      vertical-align:top;
+    }
+    th{ color:var(--muted); font-weight:600; font-size:12px; letter-spacing:.2px; }
+    tr:last-child td{ border-bottom:0; }
+
+    .money{
+      font-variant-numeric: tabular-nums;
+      white-space:nowrap;
+      font-weight:650;
+      font-family: var(--mono);
+    }
+
+    .callout{
+      border:1px dashed rgba(255,79,216,.45);
+      background: rgba(255,79,216,.07);
+      padding:12px;
+      border-radius:16px;
+      color:var(--muted);
+      font-size:12px;
+      margin-top:12px;
+    }
+    .callout strong{ color:var(--text); }
+
+    .list{ margin:0; padding-left:18px; color:var(--muted); font-size:13px; }
+    .list li{ margin:8px 0; }
+
+    .note{ margin-top:12px; color:var(--muted); font-size:12px; }
+
+    .btn{
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.16);
+      background: linear-gradient(180deg, rgba(255,79,216,.22), rgba(255,255,255,.03));
+      color:var(--text);
+      padding:10px 12px;
+      font-weight:900;
+      letter-spacing:.2px;
+      cursor:pointer;
+      font-size:13px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .btn:hover{ border-color: rgba(255,255,255,.28); }
+
+    .two{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+    }
+    @media (max-width: 920px){ .two{ grid-template-columns: 1fr; } }
+
+    .planner-grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:14px;
+      margin-top:10px;
+    }
+    @media (max-width: 920px){ .planner-grid{ grid-template-columns: 1fr; } }
+
+    .panel{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      background: rgba(0,0,0,.22);
+    }
+    .field{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    @media (max-width: 520px){ .field{ grid-template-columns: 1fr; } }
+
+    .input{
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:12px;
+      padding:10px 12px;
+      background: rgba(0,0,0,.25);
+      color:var(--text);
+      outline:none;
+      width:100%;
+      font-family: var(--mono);
+      font-size:13px;
+    }
+    label{ display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
+    .row{ margin-top:10px; }
+    .mini{ font-size:12px; color:var(--muted); margin-top:6px; }
+    .anchor{ scroll-margin-top: 90px; }
+
+    .audit-badge{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:8px 10px; border-radius:999px;
+      border:1px solid rgba(107,228,255,.35);
+      background: rgba(107,228,255,.08);
+      color:var(--muted); font-size:12px;
+      margin-top:10px;
+    }
+    .audit-badge b{ color:var(--text); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="sitehdr">
+      <div class="brand">
+        <div class="name"><span class="spark"></span> <a href="index.html" style="color:var(--text); text-decoration:none;">Kato.8 Studios LLC</a></div>
+        <div class="tag">Retro × Modern — in gameplay and aesthetics</div>
+      </div>
+      <div class="nav">
+        <a href="games.html">Games</a>
+        <a href="updates.html">Updates</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+
+    <div class="top">
+      <div>
+        <h1>Big Boss Cleanup — Financial Breakdown</h1>
+        <p class="sub">
+          Investor-ready cash planning for a capital-efficient first-person cleanup simulator.
+          Numbers are shown as ranges and each range is reconciled to explicit line items.
+        </p>
+
+        <!-- Quick action -->
+        <div style="margin-top:14px;">
+          <a href="#twelve-month-plan" class="btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+            Jump to 12-Month Plan
+            <span aria-hidden="true" style="opacity:.8;">↓</span>
+          </a>
+        </div>
+
+        <!-- Metadata badges -->
+        <div class="badge-row" style="margin-top:14px;">
+          <div class="badge"><span class="dot"></span> Milestone-gated spend</div>
+          <div class="badge"><span class="dot dot2"></span> Founder pay: $0 cash (revenue share)</div>
+        </div>
+
+        <div class="audit-badge">
+          <span style="width:8px;height:8px;border-radius:999px;background:var(--good);box-shadow:0 0 12px rgba(141,255,179,.35);display:inline-block;"></span>
+          <b>Audit status:</b> line items reconcile to scenario totals (low + high)
+        </div>
+
+        <!-- Primary CTA -->
+        <div class="badge-row" style="margin-top:18px;">
+          <a class="btn" href="investor-options.html" style="border-color: rgba(0,230,255,.35); background: linear-gradient(180deg, rgba(0,230,255,.18), rgba(0,230,255,.08)); color:var(--text); font-weight:900; box-shadow: 0 0 20px rgba(0,230,255,.15); text-decoration:none; font-size:14px; padding:12px 16px;">💼 Investor Options</a>
+        </div>
+
+        <!-- Secondary navigation -->
+        <div class="badge-row" style="margin-top:12px;">
+          <a class="btn" href="financials-corebound.html" style="border-color: rgba(255,255,255,.16); background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); text-decoration:none;">Corebound</a>
+          <a class="btn" href="financials-lastlight.html" style="border-color: rgba(255,255,255,.16); background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); text-decoration:none;">Last Light</a>
+          <a class="btn" href="financials-bigbosscleanup.html" style="border-color: rgba(0,230,255,.2); background: linear-gradient(180deg, rgba(0,230,255,.1), rgba(0,230,255,.05)); text-decoration:none; font-weight:900;">Big Boss Cleanup</a>
+        </div>
+
+        <div class="callout" style="margin-top:14px;">
+          <strong>Scope discipline:</strong> This plan assumes no combat, no multiplayer, no live-ops, and no cutscene pipeline.
+          Content is delivered as modular arenas that reuse core systems.
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="hd">
+          <div class="controls">
+            <div class="pillset" role="tablist" aria-label="Budget type">
+              <button class="pill" id="tab-baseline" role="tab" aria-selected="true">Baseline</button>
+              <button class="pill" id="tab-fast" role="tab" aria-selected="false">Fast-Track</button>
+            </div>
+            <select id="scenario"></select>
+          </div>
+
+          <div class="kpis">
+            <div class="kpi">
+              <div class="lbl">Cash Required (Range)</div>
+              <div class="val" id="kpiBudget">$—</div>
+              <div class="hint">Selected scenario total</div>
+            </div>
+            <div class="kpi">
+              <div class="lbl">Timeline</div>
+              <div class="val" id="kpiTimeline">—</div>
+              <div class="hint">Calendar months</div>
+            </div>
+            <div class="kpi">
+              <div class="lbl">Critical Path</div>
+              <div class="val" id="kpiBottleneck">—</div>
+              <div class="hint">Schedule driver</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bd">
+          <div id="summary"></div>
+
+          <table aria-label="Line item budget table">
+            <thead>
+              <tr>
+                <th style="width:46%">Cost Category</th>
+                <th style="width:22%">Low</th>
+                <th style="width:22%">High</th>
+                <th style="width:10%">Notes</th>
+              </tr>
+            </thead>
+            <tbody id="lines"></tbody>
+          </table>
+
+          <div class="note" id="reconcile"></div>
+          <div class="callout" id="callout"></div>
+          <div class="note" id="note"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="hd">
+          <div style="font-weight:900; letter-spacing:.2px">Investor View</div>
+          <div style="color:var(--muted); font-size:12px; margin-top:6px">
+            What you get, how risk is managed, and what drives schedule.
+          </div>
+        </div>
+        <div class="bd">
+          <ul class="list">
+            <li><b>Capital efficient:</b> repeatable systems, modular arenas, minimal narrative pipeline.</li>
+            <li><b>Primary schedule driver:</b> engineering throughput + environment art throughput.</li>
+            <li><b>Fastest lever:</b> a second Unity developer to parallelize systems and integration.</li>
+            <li><b>Risk control:</b> milestone gating; avoid expanding scope (multiplayer/live-ops/campaign).</li>
+          </ul>
+
+          <div class="callout">
+            <strong>Founder compensation:</strong> $0 cash salary. Cash model represents required capital to ship.
+            Revenue share (if used) is a post-launch distribution and does not increase pre-launch burn.
+          </div>
+
+          <div class="note">
+            Suggested diligence add-on: “Use of Funds & Milestones” mapping each line item to deliverables (Prototype → Slice → Beta → Launch).
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="hd">
+        <div style="font-weight:900; letter-spacing:.2px">Core Team Model (Baseline)</div>
+        <div style="color:var(--muted); font-size:12px; margin-top:6px">
+          Headcount is intentionally lean. Fractional roles are phased to control burn.
+        </div>
+      </div>
+      <div class="bd">
+        <div class="two">
+          <div>
+            <table aria-label="Team model table">
+              <thead>
+                <tr>
+                  <th>Role</th>
+                  <th>FTE</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Producer / Founder</td><td class="money">1.0</td><td style="color:var(--muted); font-size:12px">$0 cash (revenue share)</td></tr>
+                <tr><td>Unity Game Developer</td><td class="money">1.0</td><td style="color:var(--muted); font-size:12px">Core systems & integration</td></tr>
+                <tr><td>3D Environment Artist</td><td class="money">1.0</td><td style="color:var(--muted); font-size:12px">Arenas + props</td></tr>
+                <tr><td>Technical Artist / VFX</td><td class="money">0.25</td><td style="color:var(--muted); font-size:12px">Phased bursts</td></tr>
+                <tr><td>Sound Designer</td><td class="money">0.25</td><td style="color:var(--muted); font-size:12px">Phased; feedback polish</td></tr>
+                <tr><td>QA</td><td class="money">0.5</td><td style="color:var(--muted); font-size:12px">Late-stage ramp</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <div class="callout">
+              <strong>Baseline content envelope:</strong> 5–7 handcrafted arenas with strong reuse of tools and logic.
+              Expanding arena count materially should increase art and QA budgets or extend timeline.
+            </div>
+            <ul class="list" style="margin-top:12px;">
+              <li><b>Milestone gating:</b> validate the core loop before scaling content.</li>
+              <li><b>Quality driver:</b> readability of clean vs dirty + object placement feel.</li>
+              <li><b>Schedule control:</b> avoid late scope adds (multiplayer, campaign, systemic narrative).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card anchor" id="twelve-month-plan" style="margin-top:14px;">
+      <div class="hd">
+        <div style="font-weight:900; letter-spacing:.2px">12-Month Plan (Timeline Compression Planner)</div>
+        <div style="color:var(--muted); font-size:12px; margin-top:6px">
+          Add headcount where it reduces schedule (engineering + environment art). Outputs update in real time.
+        </div>
+      </div>
+      <div class="bd">
+        <div class="planner-grid">
+          <div class="panel">
+            <div style="font-weight:900; margin-bottom:6px;">Inputs</div>
+
+            <div class="row">
+              <label for="baseMonths">Baseline timeline (months)</label>
+              <input class="input" id="baseMonths" type="number" min="6" step="1" value="14" />
+              <div class="mini">Set this to your current baseline expectation (default: 14 months).</div>
+            </div>
+
+            <div class="row">
+              <label for="targetMonths">Target timeline floor (months)</label>
+              <input class="input" id="targetMonths" type="number" min="8" step="1" value="12" />
+              <div class="mini">The model will not compress below this floor without scope cuts.</div>
+            </div>
+
+            <div class="row" style="margin-top:14px;">
+              <div style="font-weight:900; margin-bottom:6px;">Added headcount (FTE)</div>
+              <div class="field">
+                <div>
+                  <label for="addDev">+ Unity Developer</label>
+                  <input class="input" id="addDev" type="number" min="0" step="0.5" value="1" />
+                </div>
+                <div>
+                  <label for="addEnv">+ Environment Artist</label>
+                  <input class="input" id="addEnv" type="number" min="0" step="0.5" value="0" />
+                </div>
+                <div>
+                  <label for="addQA">+ QA (earlier)</label>
+                  <input class="input" id="addQA" type="number" min="0" step="0.5" value="0.5" />
+                </div>
+                <div>
+                  <label for="addTA">+ Tech Artist (bursts)</label>
+                  <input class="input" id="addTA" type="number" min="0" step="0.25" value="0.25" />
+                </div>
+              </div>
+              <div class="mini">Engineering is the primary schedule driver. Art helps once integration bandwidth exists.</div>
+            </div>
+
+            <div class="row" style="margin-top:14px;">
+              <div style="font-weight:900; margin-bottom:6px;">Monthly rates (cash)</div>
+              <div class="field">
+                <div>
+                  <label for="rateDev">Unity Dev $/mo</label>
+                  <input class="input" id="rateDev" type="number" min="0" step="100" value="8000" />
+                </div>
+                <div>
+                  <label for="rateEnv">Env Artist $/mo</label>
+                  <input class="input" id="rateEnv" type="number" min="0" step="100" value="7500" />
+                </div>
+                <div>
+                  <label for="rateQA">QA $/mo</label>
+                  <input class="input" id="rateQA" type="number" min="0" step="100" value="4500" />
+                </div>
+                <div>
+                  <label for="rateTA">Tech Artist $/mo</label>
+                  <input class="input" id="rateTA" type="number" min="0" step="100" value="7000" />
+                </div>
+              </div>
+              <div class="mini">Planning rates; adjust for geography (global vs US/EU).</div>
+            </div>
+
+            <div class="row" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+              <button class="btn" id="preset12" type="button">Preset: 12‑Month Strike Team</button>
+              <button class="btn" id="presetLean" type="button" style="border-color: rgba(107,228,255,.35); background: rgba(107,228,255,.10);">Preset: Lean Baseline</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div style="font-weight:900; margin-bottom:6px;">Outputs</div>
+
+            <div class="kpis" style="grid-template-columns: 1fr; margin-top:10px;">
+              <div class="kpi" style="border-color: rgba(107,228,255,.25);">
+                <div class="lbl">Estimated new timeline</div>
+                <div class="val" id="outTimeline">—</div>
+                <div class="hint">Months (capped by target floor)</div>
+              </div>
+              <div class="kpi">
+                <div class="lbl">Incremental monthly burn</div>
+                <div class="val" id="outBurn">$—</div>
+                <div class="hint">Added cash per month</div>
+              </div>
+              <div class="kpi">
+                <div class="lbl">Incremental total cash</div>
+                <div class="val" id="outAddedCash">$—</div>
+                <div class="hint">Added burn × new timeline</div>
+              </div>
+            </div>
+
+            <div class="callout" style="margin-top:12px;">
+              <strong>Months saved assumptions:</strong> diminishing returns are applied. A second Unity developer saves the most time,
+              but only up to a cap unless content implementation is also parallelized.
+            </div>
+
+            <div class="note" id="outExplain"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:14px;">
+      © Kato.8 Studios LLC — planning model for investor communication. Replace estimates with signed vendor quotes as scope locks.
+    </div>
+
+  </div>
+
+  <script>
+    const money = (n) => {
+      if (n === null || n === undefined || !isFinite(n)) return "—";
+      return "$" + Math.round(n).toLocaleString("en-US");
+    };
+
+    const baselineScenarios = [
+      {
+        id: "baseline_12_15",
+        name: "Baseline — 12–15 months (Recommended)",
+        budgetLow: 320000,
+        budgetHigh: 450000,
+        timeline: "12–15 months",
+        bottleneck: "Engineering + Environment Art",
+        summary: `
+          <p style="margin:0 0 8px; color:var(--muted); font-size:13px">
+            Lean team delivering a complete premium cleanup simulator with modular arenas and reusable systems.
+          </p>
+          <ul class="list">
+            <li>Focus: feel, readability (clean vs dirty), and stable object/repair interactions.</li>
+            <li>Content: 5–7 arenas; minimal narrative pipeline.</li>
+          </ul>
+        `,
+        lines: [
+          { cat: "Labor (cash)", low: 220000, high: 350000, note: "Core team + phased contractors" },
+          { cat: "Software & Tools", low: 15000, high: 15000, note: "Licenses + assets" },
+          { cat: "Marketing (launch package)", low: 40000, high: 40000, note: "Trailer + Steam assets + festivals" },
+          { cat: "Legal & Accounting", low: 20000, high: 20000, note: "Contracts + compliance" },
+          { cat: "Contingency", low: 25000, high: 25000, note: "Buffer" },
+        ],
+        callout: "Baseline goal: ship a polished premium indie title without live-ops obligations.",
+        note: "Founder compensation is $0 cash; founder participates via revenue share (post-launch)."
+      }
+    ];
+
+    const fastTrackScenarios = [
+      {
+        id: "fast_10_11",
+        name: "Fast-Track — ~10–11 months (Schedule Compression)",
+        budgetLow: 420000,
+        budgetHigh: 520000,
+        timeline: "10–11 months",
+        bottleneck: "Integration bandwidth (engine + content)",
+        summary: `
+          <p style="margin:0 0 8px; color:var(--muted); font-size:13px">
+            Higher monthly burn to reduce calendar time. Adds engineering capacity and pulls QA earlier.
+          </p>
+          <ul class="list">
+            <li>Best lever: +1 Unity developer to parallelize systems and integration.</li>
+            <li>Maintains quality by avoiding late-stage crunch and rework.</li>
+          </ul>
+        `,
+        lines: [
+          { cat: "Labor (cash)", low: 310000, high: 390000, note: "+ dev capacity + earlier QA" },
+          { cat: "Software & Tools", low: 15000, high: 15000, note: "Licenses + assets" },
+          { cat: "Marketing (launch package)", low: 45000, high: 55000, note: "Stronger trailer + outreach" },
+          { cat: "Legal & Accounting", low: 20000, high: 20000, note: "Contracts + compliance" },
+          { cat: "Contingency", low: 30000, high: 40000, note: "Buffer increases with speed" },
+        ],
+        callout: "Fast-track goal: ship sooner with reduced rework risk through added capacity.",
+        note: "Founder compensation remains $0 cash; revenue share elections do not increase upfront cash requirements."
+      }
+    ];
+
+    const tabBaseline = document.getElementById("tab-baseline");
+    const tabFast = document.getElementById("tab-fast");
+    const scenarioSelect = document.getElementById("scenario");
+
+    const kpiBudget = document.getElementById("kpiBudget");
+    const kpiTimeline = document.getElementById("kpiTimeline");
+    const kpiBottleneck = document.getElementById("kpiBottleneck");
+
+    const summary = document.getElementById("summary");
+    const linesEl = document.getElementById("lines");
+    const reconcile = document.getElementById("reconcile");
+    const callout = document.getElementById("callout");
+    const note = document.getElementById("note");
+
+    let mode = "baseline";
+    let currentScenario = null;
+
+    function setMode(nextMode){
+      mode = nextMode;
+      tabBaseline.setAttribute("aria-selected", mode === "baseline");
+      tabFast.setAttribute("aria-selected", mode === "fast");
+
+      scenarioSelect.innerHTML = "";
+      const data = mode === "baseline" ? baselineScenarios : fastTrackScenarios;
+
+      data.forEach(s => {
+        const opt = document.createElement("option");
+        opt.value = s.id;
+        opt.textContent = s.name;
+        scenarioSelect.appendChild(opt);
+      });
+      scenarioSelect.selectedIndex = 0;
+      renderScenario();
+    }
+
+    function renderScenario(){
+      const data = mode === "baseline" ? baselineScenarios : fastTrackScenarios;
+      const s = data.find(x => x.id === scenarioSelect.value) || data[0];
+      currentScenario = s;
+
+      kpiBudget.textContent = `${money(s.budgetLow)} – ${money(s.budgetHigh)}`;
+      kpiTimeline.textContent = s.timeline;
+      kpiBottleneck.textContent = s.bottleneck;
+
+      summary.innerHTML = s.summary;
+
+      linesEl.innerHTML = "";
+      let lowSum = 0, highSum = 0;
+
+      s.lines.forEach(row => {
+        lowSum += Number(row.low)||0;
+        highSum += Number(row.high)||0;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${row.cat}</td>
+          <td class="money">${money(row.low)}</td>
+          <td class="money">${money(row.high)}</td>
+          <td style="color:var(--muted); font-size:12px">${row.note || ""}</td>
+        `;
+        linesEl.appendChild(tr);
+      });
+
+      const okLow = lowSum === s.budgetLow;
+      const okHigh = highSum === s.budgetHigh;
+
+      reconcile.innerHTML = `
+        <span style="display:inline-flex;gap:8px;align-items:center;">
+          <span style="width:8px;height:8px;border-radius:999px;background:${(okLow && okHigh) ? 'var(--good)' : 'var(--warn)'};display:inline-block;"></span>
+          <span style="color:var(--muted); font-size:12px;">
+            <b style="color:var(--text)">Reconciliation:</b>
+            Line-item totals =
+            <span class="money">${money(lowSum)}</span> – <span class="money">${money(highSum)}</span>
+            ${ (okLow && okHigh) ? "✓ matches" : "⚠ differs from" }
+            displayed range <span class="money">${money(s.budgetLow)}</span> – <span class="money">${money(s.budgetHigh)}</span>.
+          </span>
+        </span>
+      `;
+
+      callout.textContent = s.callout;
+      note.textContent = s.note;
+    }
+
+    tabBaseline.addEventListener("click", () => setMode("baseline"));
+    tabFast.addEventListener("click", () => setMode("fast"));
+    scenarioSelect.addEventListener("change", renderScenario);
+
+    // Planner model
+    const baseMonths = document.getElementById("baseMonths");
+    const targetMonths = document.getElementById("targetMonths");
+
+    const addDev = document.getElementById("addDev");
+    const addEnv = document.getElementById("addEnv");
+    const addQA = document.getElementById("addQA");
+    const addTA = document.getElementById("addTA");
+
+    const rateDev = document.getElementById("rateDev");
+    const rateEnv = document.getElementById("rateEnv");
+    const rateQA = document.getElementById("rateQA");
+    const rateTA = document.getElementById("rateTA");
+
+    const outTimeline = document.getElementById("outTimeline");
+    const outBurn = document.getElementById("outBurn");
+    const outAddedCash = document.getElementById("outAddedCash");
+    const outExplain = document.getElementById("outExplain");
+
+    const preset12 = document.getElementById("preset12");
+    const presetLean = document.getElementById("presetLean");
+
+    function clamp(n,a,b){ return Math.min(b, Math.max(a,n)); }
+
+    function monthsSaved(){
+      const dev = Number(addDev.value)||0;
+      const env = Number(addEnv.value)||0;
+      const qa  = Number(addQA.value)||0;
+      const ta  = Number(addTA.value)||0;
+
+      const devSave = (dev >= 1 ? 3.5 : 0) + (dev >= 2 ? 1.0 : 0) + (dev >= 3 ? 0.5 : 0);
+      const envSave = Math.min(2.0, env * 1.25);
+      const qaSave  = Math.min(1.0, qa * 0.75);
+      const taSave  = Math.min(1.0, ta * 0.8);
+
+      return devSave + envSave + qaSave + taSave;
+    }
+
+    function computePlanner(){
+      const base = Math.max(6, Number(baseMonths.value)||14);
+      const floor = clamp(Number(targetMonths.value)||12, 8, 36);
+
+      const saved = monthsSaved();
+      const newTimeline = Math.max(floor, base - saved);
+
+      const burn =
+        (Number(addDev.value)||0) * (Number(rateDev.value)||0) +
+        (Number(addEnv.value)||0) * (Number(rateEnv.value)||0) +
+        (Number(addQA.value)||0)  * (Number(rateQA.value)||0)  +
+        (Number(addTA.value)||0)  * (Number(rateTA.value)||0);
+
+      const addedCash = burn * newTimeline;
+
+      outTimeline.textContent = `${newTimeline.toFixed(1)} months`;
+      outBurn.textContent = money(burn);
+      outAddedCash.textContent = money(addedCash);
+
+      outExplain.innerHTML = `
+        CFO note: baseline <span class="money">${base.toFixed(0)} mo</span> minus estimated savings
+        <span class="money">${saved.toFixed(1)} mo</span> →
+        <span class="money">${newTimeline.toFixed(1)} mo</span> (capped by floor <span class="money">${floor.toFixed(0)} mo</span>).
+      `;
+
+      outAddedCash.setAttribute("data-inc-cash", String(addedCash));
+    }
+
+    [baseMonths,targetMonths,addDev,addEnv,addQA,addTA,rateDev,rateEnv,rateQA,rateTA].forEach(el=>{
+      el.addEventListener("input", computePlanner);
+      el.addEventListener("change", computePlanner);
+    });
+
+    preset12.addEventListener("click", ()=>{
+      baseMonths.value = 14;
+      targetMonths.value = 12;
+      addDev.value = 1;
+      addEnv.value = 0.5;
+      addQA.value = 0.5;
+      addTA.value = 0.25;
+      computePlanner();
+    });
+
+    presetLean.addEventListener("click", ()=>{
+      baseMonths.value = 14;
+      targetMonths.value = 12;
+      addDev.value = 0;
+      addEnv.value = 0;
+      addQA.value = 0;
+      addTA.value = 0;
+      computePlanner();
+    });
+
+    setMode("baseline");
+    computePlanner();
+  </script>
+
+<script>
+/* PART_TIME_MODEL */
+(function(){
+  const PART_TIME_WEIGHT = 0.5; // 50% FTE for non-full-time roles
+
+  function applyPartTime(monthlyRate, roleIndex){
+    return roleIndex === 0 ? monthlyRate : monthlyRate * PART_TIME_WEIGHT;
+  }
+
+  window.__k8PartTime = {
+    weight: PART_TIME_WEIGHT,
+    fullTimeCount: 1,
+    totalRoles: 4,
+    apply: applyPartTime
+  };
+})();
+</script>
+
+</body>
+</html>
